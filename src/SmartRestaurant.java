@@ -263,116 +263,122 @@ public class Mai{
 	}
 }*/
 
-package RestoGUI.src;
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.text.*;
 
 public class SmartRestaurant {
 	
 	SmartRestaurant(){
+    
   // Main Window
 	JFrame mainFrame = new JFrame("Smart Restaurant");
-	mainFrame.setVisible(true);
-	mainFrame.setResizable(false);
-	mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	mainFrame.setSize(600, 900);
-	mainFrame.setLayout(null);
+    mainFrame.setVisible(true);
+    mainFrame.setResizable(false);
+    mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    mainFrame.setSize(600, 800);
+    mainFrame.setLayout(null);
 	
 	JPanel StartPanel = new JPanel();
-	StartPanel.setBounds(0, 0, 584, 761);
-	StartPanel.setLayout(null);
-	StartPanel.setVisible(true);
-	frame.add(StartPanel);
+    // StartPanel.setBounds(0, 0, 584, 761);
+    StartPanel.setSize(500, 700);
+    StartPanel.setLayout(null);
+    StartPanel.setVisible(true);
+    mainFrame.add(StartPanel);
+
+  JLabel TitleFooter = new JLabel();
+    TitleFooter.setText("Smart Dining Restaurant \r\n 2025");
+    TitleFooter.setBackground(SystemColor.control);
+    TitleFooter.setBounds(220, 705, 150, 45);
+
+    StartPanel.add(TitleFooter);
 	
-	Panel OrderPanel = new Panel();
-	OrderPanel.setBounds(0, 0, 600, 900);
-	frame.add(OrderPanel);
-	OrderPanel.setVisible(false);
-	OrderPanel.setLayout(null);
-	OrderPanel.setBackground(Color.PINK);
+	JPanel OrderPanel = new JPanel();
+    OrderPanel.setSize(600, 900);
+    OrderPanel.setVisible(false);
+    OrderPanel.setLayout(null);
+    OrderPanel.setBackground(Color.PINK);
+    mainFrame.add(OrderPanel);
 	
-	JButton StartOrderBut = new JButton("Start Order");
-	StartOrderBut.addActionListener(new ActionListener() {
-	public void actionPerformed(ActionEvent e) {
-		
-	 StartPanel.setVisible(false);
-	 OrderPanel.setVisible(true);
-	}
-	});
-	StartOrderBut.setFont(new Font("Verdana", Font.BOLD, 21));
-	StartOrderBut.setBounds(191, 350, 201, 78);
-	StartPanel.add(StartOrderBut);
+	JButton StartOrderB = new JButton("Start Order");
+    StartOrderB.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        StartPanel.setVisible(false);
+        OrderPanel.setVisible(true);
+      }
+    });
+
+    StartOrderB.setFont(new Font("Verdana", Font.BOLD, 21));
+    StartOrderB.setBounds(191, 350, 201, 78);
+
+    StartPanel.add(StartOrderB);
+
+  //* Changed to label instead
 	
-	JTextPane txtpnsmartDiningRestaurant = new JTextPane();
-	txtpnsmartDiningRestaurant.setText("Smart Dining Restaurant \r\n                 2025");
-	
-	txtpnsmartDiningRestaurant.setEditable(false);
-	txtpnsmartDiningRestaurant.setBackground(SystemColor.control);
-	txtpnsmartDiningRestaurant.setBounds(220, 705, 150, 45);
-	StartPanel.add(txtpnsmartDiningRestaurant);
-	
-	
-	JLabel lblNewLabel = new JLabel("Return To Main Menu");
-	lblNewLabel.addMouseListener(new MouseAdapter() {
-		@Override
-		public void mouseClicked(MouseEvent e) {
-		
-		 StartPanel.setVisible(true);
-		 OrderPanel.setVisible(false);
-		}
-	});
-	lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-	lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-	lblNewLabel.setBounds(0, 0, 150, 27);
-	lblNewLabel.setVisible(true);
-	OrderPanel.add(lblNewLabel);
+  JButton ReturnMainMenuB = new JButton("Return To Main Menu");
+    ReturnMainMenuB.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        StartPanel.setVisible(true);
+        OrderPanel.setVisible(false);
+      }
+    });
+
+    ReturnMainMenuB.setHorizontalAlignment(SwingConstants.CENTER);
+    ReturnMainMenuB.setFont(new Font("Tahoma", Font.PLAIN, 14));
+    ReturnMainMenuB.setSize(150, 27);
+    ReturnMainMenuB.setVisible(true);
+
+    OrderPanel.add(ReturnMainMenuB);
 	
 	JTextField orderCountF = new JTextField();
-	orderCountF.setEditable(false);
-	orderCountF.setFont(new Font("Tahoma", Font.PLAIN, 15));
-	orderCountF.setText("Order Count:");
-	orderCountF.setBounds(52, 38, 186, 33);
-	orderCountF.setColumns(10);
-	orderCountF.setVisible(true);
-	orderCountF.setForeground(new Color(192, 192, 192));
-	orderCountF.setBackground(new Color(85, 107, 47));
-	OrderPanel.add(orderCountF);
+    orderCountF.setEditable(false);
+    orderCountF.setFont(new Font("Tahoma", Font.PLAIN, 15));
+    orderCountF.setText("Order Count:");
+    orderCountF.setBounds(52, 38, 186, 33);
+    orderCountF.setColumns(10);
+    orderCountF.setVisible(true);
+    orderCountF.setForeground(new Color(192, 192, 192));
+    orderCountF.setBackground(new Color(85, 107, 47));
+    OrderPanel.add(orderCountF);
+
+  JLabel BudgetLabel = new JLabel();
+    BudgetLabel.setText("Budget:");
+    BudgetLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 	
 	JTextField BudgetF = new JTextField();
-	BudgetF.setText("budget: ");
-	BudgetF.setForeground(new Color(192, 192, 192));
-	BudgetF.setBackground(new Color(85, 107, 47));
-	((AbstractDocument) BudgetF.getDocument()).setDocumentFilter(new DocumentFilter() {
-        @Override
-        public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr)
-                throws BadLocationException {
-            if (offset < 8) return; // block typing before or inside "budget:"
-            super.insertString(fb, offset, text, attr);
-        }
+    BudgetF.setForeground(new Color(192, 192, 192));
+    BudgetF.setBackground(new Color(85, 107, 47));
+    BudgetF.setFont(new Font("Tahoma", Font.PLAIN, 15));
+    BudgetF.setColumns(10);
+    BudgetF.setBounds(52, 82, 186, 33);
+    OrderPanel.add(BudgetF);
+  
+  //! Removed for easier access, put back at some point
+	// ((AbstractDocument) BudgetF.getDocument()).setDocumentFilter(new DocumentFilter() {
+  //       @Override
+  //       public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr)
+  //               throws BadLocationException {
+  //           if (offset < 8) return; // block typing before or inside "budget:"
+  //           super.insertString(fb, offset, text, attr);
+  //       }
 
-        @Override
-        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
-                throws BadLocationException {
-            if (offset < 8) return; // block replacing the prefix
-            super.replace(fb, offset, length, text, attrs);
-        }
+  //       @Override
+  //       public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+  //               throws BadLocationException {
+  //           if (offset < 8) return; // block replacing the prefix
+  //           super.replace(fb, offset, length, text, attrs);
+  //       }
 
-        @Override
-        public void remove(FilterBypass fb, int offset, int length)
-                throws BadLocationException {
-            if (offset < 8) return; // block deleting "budget:"
-            super.remove(fb, offset, length);
-        }
-    });
+  //       @Override
+  //       public void remove(FilterBypass fb, int offset, int length)
+  //               throws BadLocationException {
+  //           if (offset < 8) return; // block deleting "budget:"
+  //           super.remove(fb, offset, length);
+  //       }
+  //   });
 	
-	BudgetF.setFont(new Font("Tahoma", Font.PLAIN, 15));
-	BudgetF.setColumns(10);
-	BudgetF.setBounds(52, 82, 186, 33);
-	OrderPanel.add(BudgetF);
+	
 	
 	JTextField allegism = new JTextField();
 	allegism.setText("Alergens: ");
@@ -381,28 +387,30 @@ public class SmartRestaurant {
 	allegism.setBounds(301, 38, 216, 33);
 	allegism.setForeground(new Color(192, 192, 192));
 	allegism.setBackground(new Color(85, 107, 47));
-	((AbstractDocument) allegism.getDocument()).setDocumentFilter(new DocumentFilter() {
-        @Override
-        public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr)
-                throws BadLocationException {
-            if (offset < 10) return; // block typing before or inside "budget:"
-            super.insertString(fb, offset, text, attr);
-        }
 
-        @Override
-        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
-                throws BadLocationException {
-            if (offset < 10) return; // block replacing the prefix
-            super.replace(fb, offset, length, text, attrs);
-        }
+  //! Removed for easier access, put back when time is available
+	// ((AbstractDocument) allegism.getDocument()).setDocumentFilter(new DocumentFilter() {
+  //       @Override
+  //       public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr)
+  //               throws BadLocationException {
+  //           if (offset < 10) return; // block typing before or inside "budget:"
+  //           super.insertString(fb, offset, text, attr);
+  //       }
 
-        @Override
-        public void remove(FilterBypass fb, int offset, int length)
-                throws BadLocationException {
-            if (offset < 10) return; // block deleting "budget:"
-            super.remove(fb, offset, length);
-        }
-    });
+  //       @Override
+  //       public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+  //               throws BadLocationException {
+  //           if (offset < 10) return; // block replacing the prefix
+  //           super.replace(fb, offset, length, text, attrs);
+  //       }
+
+  //       @Override
+  //       public void remove(FilterBypass fb, int offset, int length)
+  //               throws BadLocationException {
+  //           if (offset < 10) return; // block deleting "budget:"
+  //           super.remove(fb, offset, length);
+  //       }
+  //   });
 	OrderPanel.add(allegism);
 	
 	JTextField srch = new JTextField();
@@ -547,8 +555,8 @@ public class SmartRestaurant {
 	scrollPane.setHorizontalScrollBarPolicy(scrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	OrderPanel.add(scrollPane);
 	
-	frame.revalidate();
-	frame.repaint();
+	mainFrame.revalidate();
+	mainFrame.repaint();
 	}
 	public static void main(String[] args) {
 		SmartRestaurant pa = new SmartRestaurant();
