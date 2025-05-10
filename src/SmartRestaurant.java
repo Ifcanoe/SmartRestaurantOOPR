@@ -265,47 +265,22 @@ public class Mai{
 
 package RestoGUI.src;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.Panel;
-import java.awt.SystemColor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.SwingConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.text.AbstractDocument;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DocumentFilter;
-import javax.swing.text.DocumentFilter.FilterBypass;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.text.*;
 
 public class SmartRestaurant {
 	
 	SmartRestaurant(){
-	JFrame frame = new JFrame("frame");
-	frame.setVisible(true);
-	frame.setResizable(false);
-	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	frame.setSize(600, 900);
-	frame.setLayout(null);
+  // Main Window
+	JFrame mainFrame = new JFrame("Smart Restaurant");
+	mainFrame.setVisible(true);
+	mainFrame.setResizable(false);
+	mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	mainFrame.setSize(600, 900);
+	mainFrame.setLayout(null);
 	
 	JPanel StartPanel = new JPanel();
 	StartPanel.setBounds(0, 0, 584, 761);
@@ -437,6 +412,7 @@ public class SmartRestaurant {
 	srch.setBackground(new Color(85, 107, 47));
 	srch.setColumns(10);
 	srch.setBounds(301, 82, 216, 33);
+  
 	((AbstractDocument) srch.getDocument()).setDocumentFilter(new DocumentFilter() {
         @Override
         public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr)
