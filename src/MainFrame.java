@@ -1,5 +1,16 @@
 import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.image.*;
 import java.awt.*;
+
+class ImageUtilities {
+  protected static ImageIcon resizeImage(ImageIcon img, int w, int h){
+    Image scaledImage = img.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
+
+    return new ImageIcon(scaledImage);
+
+  }
+}
 
 class Controller {
   private MainFrame view;
@@ -17,12 +28,17 @@ class Controller {
 class TopBar extends JPanel {
 
   JButton ReturnMainMenuB = new JButton("Return to the Main Menu");
+  JLabel CartLogo = new JLabel();
+  ImageIcon icon = new ImageIcon(getClass().getResource("/images/icons/cart1.png"));
 
   TopBar(Controller mvc){
-    
-    
-    ReturnMainMenuB.addActionListener(e -> mvc.switchPanel("MenuP"));
-    add(ReturnMainMenuB);
+    icon = ImageUtilities.resizeImage(icon, 50, 50);
+    CartLogo.setIcon(icon);
+
+
+    setBackground(Color.LIGHT_GRAY);
+    ReturnMainMenuB.addActionListener(e -> mvc.switchPanel("StartP"));
+    add(ReturnMainMenuB); add(CartLogo);
   }
 
 }
@@ -35,7 +51,7 @@ class MainPanel extends JPanel{
 
 }
 
-class StartPanel extends JPanel{
+class StartPanel extends JPanel {
 
   JButton goToMenuB = new JButton("Start Order");
 
@@ -83,6 +99,7 @@ public class MainFrame extends JFrame {
   // Instantiate the panels
   Controller mvc = new Controller(this);
   MainPanel MainPanel = new MainPanel(mvc);
+  TopBar TopBar = new TopBar(mvc);
   StartPanel StartPanel = new StartPanel(mvc);
   MenuPanel MenuPanel = new MenuPanel(mvc);
   OrdersPanel OrdersPanel = new OrdersPanel(mvc);
@@ -100,7 +117,8 @@ public class MainFrame extends JFrame {
       setVisible(true);
 
     // Set the main panel
-      add(MainPanel);
+      add(TopBar, BorderLayout.PAGE_START);
+      add(MainPanel, BorderLayout.CENTER);
     
     // Main Panel Settings
       MainPanel.setLayout(cLayout);
