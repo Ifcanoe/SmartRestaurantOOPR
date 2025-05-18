@@ -1,8 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.io.*;
+
 
 public class MenuPanel extends JPanel{
   
@@ -71,7 +70,6 @@ public class MenuPanel extends JPanel{
   private JButton dessertsB = new JButton("DESSERTS");
   
   private JPanel menuItemPanel = new JPanel();
-  private CardLayout menuItemPanelLayout = new CardLayout();
   
   MenuPanel(Controller mvc){
 
@@ -80,11 +78,11 @@ public class MenuPanel extends JPanel{
     setLayout(menuPanelLayout);
     setBorder(new EmptyBorder(10, 10, 10, 10));
     
-
     // Menu Label Settings
     menuLabel.setText("MENU");
     menuLabel.setHorizontalAlignment(SwingConstants.CENTER);
     menuLabel.setForeground(UIConstants.RESTO_BROWN);
+    UIConstants.setFontSize(menuLabel, 20f);
 
     // Main Dishes Button Settings
     mDishesB.setHorizontalAlignment(SwingConstants.CENTER);
@@ -173,7 +171,7 @@ public class MenuPanel extends JPanel{
     
     gbc2.weightx = 1;
     gbc2.ipady = 10;
-    gbc2.insets = new Insets(30, 0, 0, 0);
+    gbc2.insets = new Insets(10, 0, 10, 0);
     GridBagUtilities.addObject(menuLabel, menuSelectorPanel, menuSelectorPanellLayout, gbc2, 0, 0, 4, 1);
 
     gbc2.fill = GridBagConstraints.HORIZONTAL;

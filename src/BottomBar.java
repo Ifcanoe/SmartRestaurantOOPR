@@ -2,8 +2,6 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.io.*;
 
 class BottomBar extends JPanel {
   JLabel totalLabel = new JLabel();
@@ -27,6 +25,7 @@ class BottomBar extends JPanel {
     // Currency Sign Label Settings
     currencySignLabel.setHorizontalAlignment(SwingConstants.RIGHT);
     currencySignLabel.setForeground(UIConstants.CREAM);
+    UIConstants.setFontSize(currencySignLabel, 20f);
 
     // Total Text Field Settings
     totalTextPane.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -37,6 +36,8 @@ class BottomBar extends JPanel {
 
     // Cart Label Settings
     cartLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    
+      
     
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 0.1/0.3;

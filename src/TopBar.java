@@ -3,7 +3,6 @@ import javax.swing.border.*;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.io.*;
 
 
 public class TopBar extends JPanel {
@@ -21,7 +20,7 @@ public class TopBar extends JPanel {
     setBackground(UIConstants.CREAM);
 
     cartIcon = ImageUtilities.resizeImage(cartIcon, 35, 35);
-    logoIcon = ImageUtilities.resizeImage(logoIcon, 68, 59);
+    logoIcon = ImageUtilities.resizeImage(logoIcon, 38, 50);
 
     returnMainMenuB.setHorizontalAlignment(SwingConstants.LEFT);
     returnMainMenuB.setContentAreaFilled(false);
@@ -33,7 +32,7 @@ public class TopBar extends JPanel {
       mvc.displayBars(false);
     });
 
-    logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    logoLabel.setHorizontalAlignment(SwingConstants.LEFT);
     logoLabel.setIcon(logoIcon);
     logoLabel.setBackground(Color.BLACK);
 
@@ -49,17 +48,19 @@ public class TopBar extends JPanel {
       mvc.prepareTopCheckout();
     });
 
-    gbc.weightx = 0.5;
-    gbc.insets = new Insets(0, 10, 0, 0);
+    gbc.weightx = 0.1/0.2;
+    gbc.insets = new Insets(0, 0, 0, 0);
     gbc.anchor = GridBagConstraints.LINE_START;
     
     GridBagUtilities.addObject(returnMainMenuB, this, topBarLayout, gbc, 0, 0, 1, 1);
     
-    gbc.insets = new Insets(0, 10, 0, 80);
+    gbc.weightx = 1;
+    gbc.insets = new Insets(10, 0, 0, 85);
     gbc.anchor = GridBagConstraints.CENTER;
     GridBagUtilities.addObject(logoLabel, this, topBarLayout, gbc, 0, 1, 1, 1);
 
-    gbc.insets = new Insets(0, 0, 0, 0);
+    gbc.weightx = 0.1/0.2;
+    gbc.insets = new Insets(10, 0, 0, 0);
     gbc.anchor = GridBagConstraints.CENTER;
     gbc.ipadx = 30;
     gbc.ipady = 10;

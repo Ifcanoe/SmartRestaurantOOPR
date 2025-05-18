@@ -1,8 +1,6 @@
 import javax.swing.*;
-import javax.swing.border.*;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.io.*;
 
 //TODO Turn reusable code into UIUtilities
@@ -127,6 +125,7 @@ class UIConstants {
   public static Font DEFAULT_FONT;
   public static Font baseFont;
   public static final Color DARK_GREEN = new Color(6, 82, 4);
+  public static final Color RESTO_GRAY = new Color(80, 80, 80);
   public static final Color CREAM = new Color(255, 245, 225);
   public static final Color RESTO_BROWN = new Color(82, 45, 26);
   public static final Color INVIS = new Color(000, true);
@@ -139,12 +138,14 @@ class UIConstants {
 
       UIDefaults defaults = UIManager.getLookAndFeelDefaults();
       defaults.put("Button.focus", INVIS);
-      //! defaults.put("Button.opaque", false);
 
     } catch (Exception e){
       System.err.print(e.getMessage());
     }
-    
+  }
+
+  public static void setFontSize(Component c, float size){
+    c.setFont(baseFont.deriveFont(Font.PLAIN, size));
   }
 
   public static void applyDefaultFont() {
@@ -159,14 +160,14 @@ class UIConstants {
   }
 
   public static void applyDefaultForeground() {
-    UIManager.put("Label.foreground", Color.BLACK);
-    UIManager.put("Button.foreground", Color.BLACK);
-    UIManager.put("TextField.foreground", Color.BLACK);
-    UIManager.put("TextArea.foreground", Color.BLACK);
-    UIManager.put("ComboBox.foreground", Color.BLACK);
-    UIManager.put("TabbedPane.foreground", Color.BLACK);
-    UIManager.put("CheckBox.foreground", Color.BLACK);
-    UIManager.put("RadioButton.foreground", Color.BLACK);
+    UIManager.put("Label.foreground", RESTO_GRAY);
+    UIManager.put("Button.foreground", RESTO_GRAY);
+    UIManager.put("TextField.foreground", RESTO_GRAY);
+    UIManager.put("TextArea.foreground", RESTO_GRAY);
+    UIManager.put("ComboBox.foreground", RESTO_GRAY);
+    UIManager.put("TabbedPane.foreground", RESTO_GRAY);
+    UIManager.put("CheckBox.foreground", RESTO_GRAY);
+    UIManager.put("RadioButton.foreground", RESTO_GRAY);
   }
 
 
