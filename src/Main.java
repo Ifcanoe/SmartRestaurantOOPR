@@ -10,7 +10,7 @@ import java.io.*;
 class RoundedButtonS extends JButton {
   private int cornerRadius = 50;
   private Color backgroundColor;
-  private Color textColor = UIConstants.CREAM;
+  private Color textColor = UIUtilities.CREAM;
 
   public RoundedButtonS(String text) {
     super(text);
@@ -25,18 +25,18 @@ class RoundedButtonS extends JButton {
     protected void paintComponent(Graphics g) {
       Graphics2D g2 = (Graphics2D) g.create();
 
-      // Smooth edges
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+      // Create shadow beneath
       g2.setColor(new Color(0, 0, 0, 60));
       g2.fillRoundRect(0, 5, getWidth() - 4, getHeight() - 4, cornerRadius, cornerRadius);
 
-      // Draw filled rounded rectangle
+      // Create the round rectangle
       g2.setColor(getBackground());
       g2.fillRoundRect(0, 0, getWidth() - 5, getHeight() - 5, cornerRadius, cornerRadius);
 
       g2.dispose();
-      super.paintComponent(g); // Draw the text/icon
+      super.paintComponent(g); 
   }
 
   @Override
@@ -65,12 +65,6 @@ class RoundedButtonS extends JButton {
     repaint();
   }
 
-  //! Deprecated
-  // public void setBorderColor(Color color) {
-  //   this.borderColor = color;
-  //   repaint();
-  // }
-
   public void setTextColor(Color color) {
     this.textColor = color;
     setForeground(color);
@@ -97,30 +91,27 @@ class GridBagUtilities {
 }
 
 class ImageUtilities {
-
-  ImageIcon cartIcon;
-  private static JLabel cartLabel;
   
   protected static ImageIcon resizeImage(ImageIcon img, int w, int h){
     Image scaledImage = img.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
 
     return new ImageIcon(scaledImage);
   }
-  
-  static {
-    ImageIcon cartIcon = new ImageIcon(ImageUtilities.class.getResource("/images/icons/cart1.png"));
-    cartIcon = resizeImage(cartIcon, 50, 50);
-    cartLabel = new JLabel();
-    cartLabel.setIcon(cartIcon);
+
+  public static ImageIcon getImage(String path){
+    ImageIcon image = new ImageIcon(ImageUtilities.class.getResource(path));
+    return image;
   }
 
-  public static JLabel getCartLabel() {
-    return cartLabel;
+  public static ImageIcon getImage(String path, int w, int h){
+    ImageIcon image = new ImageIcon(ImageUtilities.class.getResource(path));
+    image = resizeImage(image, w, h);
+    return image;
   }
 
 }
 
-class UIConstants {
+class UIUtilities {
 
   public static Font DEFAULT_FONT;
   public static Font baseFont;
@@ -129,10 +120,11 @@ class UIConstants {
   public static final Color CREAM = new Color(255, 245, 225);
   public static final Color RESTO_BROWN = new Color(82, 45, 26);
   public static final Color INVIS = new Color(000, true);
+  public static final Color ORANGE = new Color(213, 160, 90);
 
   static {
     try {
-      InputStream is = UIConstants.class.getResourceAsStream("/font/MontserratBold.ttf");
+      InputStream is = UIUtilities.class.getResourceAsStream("/font/MontserratBold.ttf");
       baseFont = Font.createFont(Font.TRUETYPE_FONT, is);
       DEFAULT_FONT = baseFont.deriveFont(Font.PLAIN, 16f);
 
@@ -180,50 +172,7 @@ class UIConstants {
 
 }
 
-class Controller {
-  private MainFrameView view;
-  private RestaurantModel model;
 
-  public Controller(MainFrameView view, RestaurantModel model){
-    this.view = view;
-    this.model = model;
-  }
-
-  public void switchPanel(String panelName){
-    view.displayPanel(panelName);
-  }
-
-  public void displayBars(boolean state){
-    view.displayComponent(view.getTopBar(), state);
-    view.displayComponent(view.getBottomBar(), state);
-  }
-
-  public void prepareTopCheckout(){
-    TopBar topBar = view.getTopBar();
-
-    topBar.configureCartButton(false, e -> {});
-    topBar.configureReturnButton("BACK", e -> {
-      view.displayPanel("MenuP");
-      resetTopBarBehavior();
-    });
-  
-  }
-
-  public void resetTopBarBehavior(){
-    TopBar topBar = view.getTopBar();
-
-    topBar.configureCartButton(true, e -> {
-      switchPanel("CheckoutP");
-      prepareTopCheckout();
-    });
-
-    topBar.configureReturnButton("BACK TO MAIN MENU", e -> {
-      switchPanel("StartP");
-      displayBars(false);
-    });
-  }
-
-}
 
 class MainFrameView extends JFrame {
 
@@ -312,9 +261,9 @@ class MainFrameView extends JFrame {
 public class Main {
   
   public static void main(String[] args){
-    UIConstants.applyDefaultBackground();
-    UIConstants.applyDefaultForeground();
-    UIConstants.applyDefaultFont();
+    UIUtilities.applyDefaultBackground();
+    UIUtilities.applyDefaultForeground();
+    UIUtilities.applyDefaultFont();
     new MainFrameView();
   }
 

@@ -13,18 +13,18 @@ public class StartPanel extends JPanel {
 
   StartPanel(Controller mvc){
     setLayout(startPanelLayout);
-    setBackground(UIConstants.CREAM);
+    setBackground(UIUtilities.CREAM);
     
     // startOrderB.setPreferredSize(new Dimension(200, 100));
 
     smartDiningRestaurantTitle.setText("SMART DINING RESTAURANT");
-    smartDiningRestaurantTitle.setFont(UIConstants.baseFont.deriveFont(Font.PLAIN, 32f));
+    smartDiningRestaurantTitle.setFont(UIUtilities.baseFont.deriveFont(Font.PLAIN, 32f));
 
     logoLabel.setIcon(logoIcon);
 
     startOrderB.setBorder(null);
-    startOrderB.setForeground(UIConstants.CREAM);
-    startOrderB.setBackground(UIConstants.RESTO_BROWN);
+    startOrderB.setForeground(UIUtilities.CREAM);
+    startOrderB.setBackground(UIUtilities.RESTO_BROWN);
     startOrderB.addActionListener(e -> {
       mvc.switchPanel("MenuP");
       mvc.displayBars(true);

@@ -17,14 +17,14 @@ public class TopBar extends JPanel {
   TopBar(Controller mvc){
 
     setLayout(topBarLayout);
-    setBackground(UIConstants.CREAM);
+    setBackground(UIUtilities.CREAM);
 
     cartIcon = ImageUtilities.resizeImage(cartIcon, 35, 35);
     logoIcon = ImageUtilities.resizeImage(logoIcon, 38, 50);
 
     returnMainMenuB.setHorizontalAlignment(SwingConstants.LEFT);
     returnMainMenuB.setContentAreaFilled(false);
-    returnMainMenuB.setForeground(UIConstants.RESTO_BROWN);
+    returnMainMenuB.setForeground(UIUtilities.RESTO_BROWN);
     returnMainMenuB.setBorder(new EmptyBorder(10, 10, 10, 10));
     returnMainMenuB.setOpaque(false);
     returnMainMenuB.addActionListener(e -> {
@@ -37,12 +37,10 @@ public class TopBar extends JPanel {
     logoLabel.setBackground(Color.BLACK);
 
     cartB.setHorizontalAlignment(SwingConstants.CENTER);
-    cartB.setContentAreaFilled(false);
-    cartB.setBackground(UIConstants.RESTO_BROWN);
-    cartB.setForeground(UIConstants.CREAM);
-    cartB.setBorder(null);
-    cartB.setOpaque(false);
+    cartB.setBackground(UIUtilities.RESTO_BROWN);
+    cartB.setForeground(UIUtilities.CREAM);
     cartB.setIcon(cartIcon);
+    
     cartB.addActionListener(e -> {
       mvc.switchPanel("CheckoutP");
       mvc.prepareTopCheckout();

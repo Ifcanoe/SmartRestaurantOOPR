@@ -15,28 +15,28 @@ public class CheckoutPanel extends JPanel{
   GridBagConstraints gbc = new GridBagConstraints();
 
   CheckoutPanel(Controller mvc){
-    setBackground(UIConstants.CREAM);
+    setBackground(UIUtilities.CREAM);
     setLayout(checkoutPanelLayout);
 
     // Checkout Cart Label Settings
     checkoutCartLabel.setText("CART");
-    checkoutCartLabel.setForeground(UIConstants.RESTO_BROWN);
-    UIConstants.setFontSize(checkoutCartLabel, 20f);
+    checkoutCartLabel.setForeground(UIUtilities.RESTO_BROWN);
+    UIUtilities.setFontSize(checkoutCartLabel, 20f);
 
     // Pay Button Settings
     cancelAllButton.setHorizontalAlignment(SwingConstants.CENTER);
     cancelAllButton.setFocusPainted(false);       
     cancelAllButton.setBorderPainted(false);
-    cancelAllButton.setBackground(UIConstants.DARK_GREEN);
-    cancelAllButton.setForeground(UIConstants.CREAM);
+    cancelAllButton.setBackground(UIUtilities.DARK_GREEN);
+    cancelAllButton.setForeground(UIUtilities.CREAM);
     cancelAllButton.setText("CANCEL ALL");
 
     // Cancel All Button Settings
     payButton.setHorizontalAlignment(SwingConstants.CENTER);
     payButton.setFocusPainted(false);       
     payButton.setBorderPainted(false);
-    payButton.setBackground(UIConstants.DARK_GREEN);
-    payButton.setForeground(UIConstants.CREAM);
+    payButton.setBackground(UIUtilities.DARK_GREEN);
+    payButton.setForeground(UIUtilities.CREAM);
     payButton.setText("PROCEED TO PAY");
 
     ordersPanel.setBackground(Color.WHITE);

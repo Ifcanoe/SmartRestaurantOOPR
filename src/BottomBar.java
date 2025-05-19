@@ -6,36 +6,37 @@ import java.awt.*;
 class BottomBar extends JPanel {
   JLabel totalLabel = new JLabel();
   JTextField totalTextPane = new JTextField();
-  JLabel cartLabel = ImageUtilities.getCartLabel();
+  JLabel cartLabel = new JLabel();
   JLabel currencySignLabel = new JLabel("₱");
   GridBagLayout bottomBarLayout = new GridBagLayout();
   GridBagConstraints gbc = new GridBagConstraints();
 
   BottomBar(Controller mvc){
 
-    setBackground(UIConstants.DARK_GREEN);
+    setBackground(UIUtilities.DARK_GREEN);
     setLayout(bottomBarLayout);
     setBorder(new LineBorder(new Color(220, 220, 220), 5));
 
     // TotalLabel Settings
     totalLabel.setText("TOTAL: ");
-    totalLabel.setForeground(UIConstants.CREAM);
+    totalLabel.setForeground(UIUtilities.CREAM);
     totalLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
     // Currency Sign Label Settings
     currencySignLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-    currencySignLabel.setForeground(UIConstants.CREAM);
-    UIConstants.setFontSize(currencySignLabel, 20f);
+    currencySignLabel.setForeground(UIUtilities.CREAM);
+    UIUtilities.setFontSize(currencySignLabel, 20f);
 
     // Total Text Field Settings
     totalTextPane.setBorder(new EmptyBorder(0, 0, 0, 0));
     totalTextPane.setSize(100, 100);
     totalTextPane.setHorizontalAlignment(SwingConstants.CENTER);
-    totalTextPane.setFont(UIConstants.baseFont.deriveFont(Font.PLAIN, 24f));
+    totalTextPane.setFont(UIUtilities.baseFont.deriveFont(Font.PLAIN, 24f));
     totalTextPane.setEditable(false);
 
     // Cart Label Settings
     cartLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    cartLabel.setIcon(ImageUtilities.getImage("/images/icons/cart1.png", 50, 50));
     
       
     
