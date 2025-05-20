@@ -129,7 +129,6 @@ public class MenuPanel extends JPanel{
   private JButton drinksB = new JButton("DRINKS");
   private JButton dessertsB = new JButton("DESSERTS");
 
-  private MenuItemContainer menuItemContainer;
   private JPanel menuItemPanel = new JPanel();
   private JScrollPane mipScrollPane = new JScrollPane();
 
