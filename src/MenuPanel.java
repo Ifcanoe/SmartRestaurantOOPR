@@ -21,10 +21,10 @@ public class MenuPanel extends JPanel{
     private BoxLayout layout;
     private BoxLayout MICLayout;
 
-
     private int id;
+    private String code;
   
-    MenuItemContainer(String name, String calories, String price, String path, int id){ 
+    MenuItemContainer(){ 
       menuItemImage = new JLabel();
       menuItemName = new JLabel();
       menuItemCalCount = new JLabel();
@@ -37,28 +37,22 @@ public class MenuPanel extends JPanel{
       MICLayout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
 
 
-      this.id = id;
-
       setLayout(MICLayout);
       setBackground(UIUtilities.RESTO_BROWN);
       setBorder(new EmptyBorder(20, 0, 20, 0));
       setPreferredSize(new Dimension(170, 235));
 
       menuItemImage.setAlignmentX(CENTER_ALIGNMENT);
-      menuItemImage.setIcon(ImageUtilities.getImage(path));
-
+      
       menuItemName.setAlignmentX(CENTER_ALIGNMENT);
       menuItemName.setForeground(UIUtilities.CREAM);
-      menuItemName.setText(name);
       
       menuItemCalCount.setAlignmentX(CENTER_ALIGNMENT);
       menuItemCalCount.setForeground(UIUtilities.CREAM);
-      menuItemCalCount.setText(calories);
-
+      
       menuItemPrice.setAlignmentX(CENTER_ALIGNMENT);
       menuItemPrice.setForeground(UIUtilities.CREAM);
-      menuItemPrice.setText(price);
-
+      
       orderButton.setAlignmentX(CENTER_ALIGNMENT);
       orderButton.setFocusPainted(false);       
       orderButton.setBorderPainted(false);
@@ -88,8 +82,8 @@ public class MenuPanel extends JPanel{
     }
 
     //? Is this needed?
-    public void setID(int id){
-      this.id = id;
+    public void createMenuItem () {
+      
     }
 
     public int getID(){
@@ -193,7 +187,6 @@ public class MenuPanel extends JPanel{
     menuItemPanel.setBackground(Color.WHITE);
     menuItemPanel.setLayout(mipLayout);
   
-    menuItemContainer = new MenuItemContainer("CHEESEBURGER", "600", "700000", "/images/MainDishes/newmenu/cheeseburger.png", 1);
     GridBagUtilities.addObject(menuItemContainer, menuItemPanel, mipLayout, mipgbc, 0, 0, 1, 1);
 
 
@@ -244,9 +237,9 @@ public class MenuPanel extends JPanel{
   }
 
   public MenuItemContainer createMenuItem(String name, String calories, String price, String path, int id){
-      MenuItemContainer menuItem = new MenuItemContainer(name, calories, price, path, id);
-      return menuItem;
-    }
+    MenuItemContainer menuItem = new MenuItemContainer(name, calories, price, path, id);
+    return menuItem;
+  }
 
   public JPanel getMenuPanel() {
     return menuItemPanel;
