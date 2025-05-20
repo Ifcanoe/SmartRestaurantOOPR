@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.sql.ResultSet;
 
 
@@ -46,26 +47,18 @@ public class Controller {
   }
 
   // * Menu Panel Controller 
-  public void displayMainDishes(){
-    // Grab all Main Dishes from model
-    // create a MenuItemContainer from each RowSet
-    int count = 0;
-    MenuPanel menuPanel = view.getMenuPanel();
-    ResultSet rs = model.getMenuItemRow("MainDish");
+  public void displayCategory(String category){{
+      MenuPanel menuPanel = view.getMenuPanel();
 
-    //@params String name, float price, int calories, String path
-    while (rs.next()){
-      menuPanel.createMenuItem(
-        rs.getString(count);
-        rs.getFloat();
-        rs.getInt();
-        rs.getString();
-      );
+      // Reset display
+      menuPanel.resetDisplay();
+
+      List<MenuItemData> items = model.getMenuItemsByCategory(category);
+
+      for (MenuItemData item : items) {
+        menuPanel.addMenuItem(item);
+      }
     }
-
   
-
-    
-
   }
 }

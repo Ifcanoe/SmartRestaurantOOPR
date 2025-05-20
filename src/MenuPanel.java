@@ -8,23 +8,45 @@ import java.awt.event.ActionListener;
 
 public class MenuPanel extends JPanel{
 
-  //? Example stuff
+  private int item_count = 0;
+
+  public void addMenuItem(MenuItemData data){
+    MenuItemContainer menuItem = new MenuItemContainer(data);
+    GridBagConstraints gbc = new GridBagConstraints();
+    
+    
+    gbc.weightx = 0.1/0.3;
+    gbc.insets = new Insets(5, 5, 5, 5);
+
+    GridBagUtilities.addObject(menuItem, menuItemPanel, mipLayout, gbc, item_count / 3, item_count % 3, 1, 1);
+    item_count++;
+
+    menuItemPanel.revalidate();
+    menuItemPanel.repaint();
+  }
+
+  public void resetDisplay(){
+    item_count = 0;
+
+    menuItemPanel.removeAll();
+    menuItemPanel.revalidate();
+    menuItemPanel.repaint();
+  }
 
   private class MenuItemContainer extends JPanel{
-    
     private JLabel menuItemImage;
     private JLabel menuItemName;
     private JLabel menuItemCalCount;
     private JLabel menuItemPrice;
     private JButton orderButton;
+    
+    private MenuItemData menuItemData;
+
     private JPanel orderPricePanel;
     private BoxLayout layout;
     private BoxLayout MICLayout;
-
-    private int id;
-    private String code;
-  
-    MenuItemContainer(){ 
+    
+    MenuItemContainer(MenuItemData data){ 
       menuItemImage = new JLabel();
       menuItemName = new JLabel();
       menuItemCalCount = new JLabel();
@@ -32,10 +54,10 @@ public class MenuPanel extends JPanel{
       orderButton = new JButton();
       orderPricePanel = new JPanel();
 
-      layout = new BoxLayout(orderPricePanel, BoxLayout.LINE_AXIS);
+      this.menuItemData = data;
       
+      layout = new BoxLayout(orderPricePanel, BoxLayout.LINE_AXIS);
       MICLayout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
-
 
       setLayout(MICLayout);
       setBackground(UIUtilities.RESTO_BROWN);
@@ -43,15 +65,20 @@ public class MenuPanel extends JPanel{
       setPreferredSize(new Dimension(170, 235));
 
       menuItemImage.setAlignmentX(CENTER_ALIGNMENT);
+      menuItemImage.setIcon(ImageUtilities.getImage(data.imagePath, 170, 95));
+      menuItemImage.setPreferredSize(new Dimension(170, 95));
       
       menuItemName.setAlignmentX(CENTER_ALIGNMENT);
       menuItemName.setForeground(UIUtilities.CREAM);
+      menuItemName.setText(data.name);
       
       menuItemCalCount.setAlignmentX(CENTER_ALIGNMENT);
       menuItemCalCount.setForeground(UIUtilities.CREAM);
+      menuItemCalCount.setText(Integer.toString(data.calories));
       
       menuItemPrice.setAlignmentX(CENTER_ALIGNMENT);
       menuItemPrice.setForeground(UIUtilities.CREAM);
+      menuItemPrice.setText(Float.toString(data.price));
       
       orderButton.setAlignmentX(CENTER_ALIGNMENT);
       orderButton.setFocusPainted(false);       
@@ -66,10 +93,8 @@ public class MenuPanel extends JPanel{
       orderPricePanel.setLayout(layout);
       orderPricePanel.setBorder(new EmptyBorder(0, 10, 0, 0));
 
-
       orderPricePanel.add(menuItemPrice);
       orderPricePanel.add(orderButton);
-
 
       add(menuItemImage);
       add(Box.createRigidArea(new Dimension(0, 10)));
@@ -81,18 +106,11 @@ public class MenuPanel extends JPanel{
 
     }
 
-    //? Is this needed?
-    public void createMenuItem () {
-      
-    }
-
-    public int getID(){
-      return id;
+    public MenuItemData getMenuItemData(){
+      return menuItemData;
     }
 
   }
-
-
 
   private GridBagLayout menuPanelLayout = new GridBagLayout();
   private GridBagConstraints gbc = new GridBagConstraints();
@@ -116,8 +134,7 @@ public class MenuPanel extends JPanel{
   private JScrollPane mipScrollPane = new JScrollPane();
 
   private GridBagLayout mipLayout = new GridBagLayout();
-  private GridBagConstraints mipgbc = new GridBagConstraints();
-  
+    
     MenuPanel(Controller mvc){
 
     // Menu Panel Settings
@@ -187,12 +204,6 @@ public class MenuPanel extends JPanel{
     menuItemPanel.setBackground(Color.WHITE);
     menuItemPanel.setLayout(mipLayout);
   
-    GridBagUtilities.addObject(menuItemContainer, menuItemPanel, mipLayout, mipgbc, 0, 0, 1, 1);
-
-
-    mipgbc.weightx = 0.1/0.3;
-    mipgbc.insets = new Insets(5, 5, 5, 5);
-
     mipScrollPane.setViewportView(menuItemPanel);
     mipScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
     mipScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -234,11 +245,6 @@ public class MenuPanel extends JPanel{
     GridBagUtilities.addObject(drinksB, menuSelectorPanel, menuSelectorPanellLayout, gbc2, 1, 2, 1, 1);
     GridBagUtilities.addObject(dessertsB, menuSelectorPanel, menuSelectorPanellLayout, gbc2, 1, 3, 1, 1);
 
-  }
-
-  public MenuItemContainer createMenuItem(String name, String calories, String price, String path, int id){
-    MenuItemContainer menuItem = new MenuItemContainer(name, calories, price, path, id);
-    return menuItem;
   }
 
   public JPanel getMenuPanel() {
