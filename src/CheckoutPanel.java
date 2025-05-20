@@ -6,6 +6,7 @@ import javax.swing.*;
 
 
 public class CheckoutPanel extends JPanel{
+
   private JLabel checkoutCartLabel = new JLabel();
   private JPanel ordersPanel = new JPanel();
   private JButton cancelAllButton = new JButton();
@@ -39,7 +40,9 @@ public class CheckoutPanel extends JPanel{
     payButton.setForeground(UIUtilities.CREAM);
     payButton.setText("PROCEED TO PAY");
 
+    // Orders Container Settings
     ordersPanel.setBackground(Color.WHITE);
+
     ordersPanel.add(new JLabel("fake"));
 
     gbc.weightx = 0.1;

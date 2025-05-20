@@ -1,9 +1,6 @@
-import javax.print.attribute.standard.JobKOctetsProcessed;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-
 
 
 public class MenuPanel extends JPanel{
@@ -87,6 +84,10 @@ public class MenuPanel extends JPanel{
       orderButton.setBackground(UIUtilities.ORANGE);
       orderButton.setText("+");
       UIUtilities.setFontSize(orderButton, 20f);
+      orderButton.addActionListener(e -> {
+        // * mvc.addOrder();
+      });
+
 
       orderPricePanel.setAlignmentX(CENTER_ALIGNMENT);
       orderPricePanel.setBackground(UIUtilities.ORANGE);
@@ -105,7 +106,8 @@ public class MenuPanel extends JPanel{
       add(orderPricePanel);
 
     }
-
+  
+    // * Get data through order
     public MenuItemData getMenuItemData(){
       return menuItemData;
     }

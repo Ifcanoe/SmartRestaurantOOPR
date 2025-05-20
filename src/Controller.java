@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
-import java.sql.ResultSet;
 
 
 public class Controller {
@@ -53,7 +51,7 @@ public class Controller {
       // Reset display
       menuPanel.resetDisplay();
 
-      List<MenuItemData> items = model.getMenuItemsByCategory(category);
+      ArrayList<MenuItemData> items = model.getMenuItemsByCategory(category);
 
       for (MenuItemData item : items) {
         menuPanel.addMenuItem(item);
