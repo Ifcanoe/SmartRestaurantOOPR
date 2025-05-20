@@ -28,7 +28,6 @@ public class StartPanel extends JPanel {
     startOrderB.addActionListener(e -> {
       mvc.switchPanel("MenuP");
       mvc.displayBars(true);
-      mvc.displayCategory("MainDish");
     });
     
     gbc.weightx = 0.5;

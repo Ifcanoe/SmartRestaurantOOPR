@@ -192,6 +192,8 @@ class MainFrameView extends JFrame {
 
   MainFrameView(){
 
+    mvc.displayCategory("MainDish");
+
     // Settings for MainFrameView
       setLayout(new BorderLayout());
       setTitle("Smart Restaurant");

@@ -16,7 +16,7 @@ public class MenuPanel extends JPanel{
     
     
     gbc.weightx = 0.1/0.3;
-    gbc.insets = new Insets(5, 5, 5, 5);
+    gbc.insets = new Insets(2, 2, 2, 2);
 
     GridBagUtilities.addObject(menuItem, menuItemPanel, mipLayout, gbc, item_count / 3, item_count % 3, 1, 1);
     item_count++;
@@ -155,6 +155,9 @@ public class MenuPanel extends JPanel{
     mDishesB.setBackground(UIUtilities.DARK_GREEN);
     mDishesB.setForeground(UIUtilities.CREAM);
     mDishesB.setFont(UIUtilities.baseFont.deriveFont(Font.PLAIN, 12f));
+    mDishesB.addActionListener(e -> {
+      mvc.displayCategory("MainDish");
+    });
 
     // Sides Button Settings
     sidesB.setHorizontalAlignment(SwingConstants.CENTER);
@@ -163,6 +166,9 @@ public class MenuPanel extends JPanel{
     sidesB.setBackground(UIUtilities.DARK_GREEN);
     sidesB.setForeground(UIUtilities.CREAM);
     sidesB.setFont(UIUtilities.baseFont.deriveFont(Font.PLAIN, 12f));
+    sidesB.addActionListener(e -> {
+      mvc.displayCategory("SideDish");
+    });
 
     // Drink Button Settings
     drinksB.setHorizontalAlignment(SwingConstants.CENTER);
@@ -171,6 +177,9 @@ public class MenuPanel extends JPanel{
     drinksB.setBackground(UIUtilities.DARK_GREEN);
     drinksB.setForeground(UIUtilities.CREAM);
     drinksB.setFont(UIUtilities.baseFont.deriveFont(Font.PLAIN, 12f));
+    drinksB.addActionListener(e -> {
+      mvc.displayCategory("Drinks");
+    });
 
     // Desserts Button Settings
     dessertsB.setHorizontalAlignment(SwingConstants.CENTER);
@@ -179,6 +188,9 @@ public class MenuPanel extends JPanel{
     dessertsB.setBackground(UIUtilities.DARK_GREEN);
     dessertsB.setForeground(UIUtilities.CREAM);
     dessertsB.setFont(UIUtilities.baseFont.deriveFont(Font.PLAIN, 12f));
+    dessertsB.addActionListener(e -> {
+      mvc.displayCategory("Dessert");
+    });
 
     // Allergens Button Item Settings
     allergensB.setHorizontalAlignment(SwingConstants.CENTER);
