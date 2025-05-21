@@ -36,11 +36,8 @@ public class CheckoutPanel extends JPanel {
 
   private final Color DARK_GREEN = new Color(64, 97, 55);
   private final Color CLICKED_DARK_GREEN = new Color(84, 126, 71);
-  
-  private Controller mvc;
-  
+    
   CheckoutPanel(Controller mvc){
-    this.mvc = mvc;
     setLayout(checkoutPanelLayout);
     // setBackground(UIUtilities.CREAM);
 

@@ -3,6 +3,8 @@ package GUI;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import Utilities.GridBagUtilities;
 import Utilities.UIUtilities;
@@ -138,14 +140,23 @@ public class MenuPanel extends JPanel{
     budgetTextField.setBackground(UIUtilities.DARK_GREEN);
     budgetTextField.setForeground(UIUtilities.CREAM);
     budgetTextField.setBorder(null);
+    budgetTextField.setText("BUDGET");
+    budgetTextField.addMouseListener(new MouseAdapter(){
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        budgetTextField.setText("");
+      }
+    });
     
-    // IMPORTANT Menu Item Panel Settings //
+    // Menu Item Panel Settings
     menuItemPanel.setBackground(Color.WHITE);
     menuItemPanel.setLayout(mipLayout);
   
+    // Menu Item Panel Scroll Pane Settings 
     mipScrollPane.setViewportView(menuItemPanel);
     mipScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
     mipScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    mipScrollPane.setBorder(null);
     mipScrollPane.getVerticalScrollBar().setUnitIncrement(20);
 
     // Menu Selector Panel Settings
