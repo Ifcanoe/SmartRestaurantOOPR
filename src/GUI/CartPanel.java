@@ -53,6 +53,8 @@ public class CartPanel extends JPanel{
   private JScrollPane oPScrollPane = new JScrollPane();
   private Controller mvc;
 
+  private OrderConfirm orderConfirmDialog;
+
   private int item_count = 0;
 
   GridBagLayout CartPanelLayout = new GridBagLayout();
@@ -84,7 +86,7 @@ public class CartPanel extends JPanel{
     cancelAllButton.addActionListener(e -> {
       mvc.emptyCart();
     });
-
+    
     // Cancel All Button Settings
     payButton.setHorizontalAlignment(SwingConstants.CENTER);
     payButton.setFocusPainted(false);       
@@ -94,8 +96,15 @@ public class CartPanel extends JPanel{
     payButton.setText("PROCEED TO PAY");
     payButton.addActionListener(e -> {
       mvc.printCart();
-      mvc.switchPanel("CheckoutP");
-      mvc.prepareTopCheckout();
+      orderConfirmDialog = new OrderConfirm(mvc);
+      orderConfirmDialog.displayDialog(payButton);
+      
+      
+      
+
+      //? Should we use this?
+      // mvc.switchPanel("CheckoutP");
+      // mvc.prepareTopCheckout();
     });
 
     // Orders Panel Scroll Pane Settings

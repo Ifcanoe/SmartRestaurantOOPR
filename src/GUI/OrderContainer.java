@@ -69,7 +69,7 @@ public class OrderContainer extends JPanel{
 
     // Quantity Bought
     quantityBoughtLabel.setForeground(UIUtilities.CREAM);
-    quantityBoughtLabel.setText(Integer.toString(itemData.getQuantity()));
+    quantityBoughtLabel.setText(Integer.toString(itemData.quantity));
 
     gbc.weightx = 1;
     GridBagUtilities.addObject(nameLabel, this, layout, gbc, 0, 0, 3, 1);

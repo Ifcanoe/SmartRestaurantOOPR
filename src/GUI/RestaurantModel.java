@@ -1,6 +1,8 @@
 package GUI;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
+
 
 public class RestaurantModel {
   private static final String DB_URL = "jdbc:mysql://localhost/SmartRestaurant";
@@ -8,33 +10,62 @@ public class RestaurantModel {
   private static final String PASS = "mysql";
 
   private ArrayList<MenuItemData> addedToCart;
+  private int currentOrderId = -1;
+  private float currentTotal = 0f;
 
-  public void printArray(ArrayList<MenuItemData> arr){
-    for (MenuItemData thing : arr){
-      System.out.println(thing.imagePath);
+  public void createOrder(String paymentType, String orderType){
+
+    try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO Orders (payment_type, order_date, order_type, order_total) VALUES (?, CURRENT_DATE(), ?, ?)", Statement.RETURN_GENERATED_KEYS)){
+
+        stmt.setString(1, paymentType);
+        stmt.setString(2, orderType);
+        stmt.setBigDecimal(3, new BigDecimal(Float.toString(currentTotal)));
+        stmt.executeUpdate();
+        
+        try (ResultSet rs = stmt.getGeneratedKeys()){
+          if (rs.next()){
+            currentOrderId = rs.getInt(1);
+            //!!! Debug !!!
+            // System.out.println("New Order ID: " + currentOrderId);
+          }
+        }
+      
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
   }
 
-  public ResultSet getMenuItemRow(int id, String category){
-    ResultSet rs = null;
-    
-    try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM MenuItems WHERE menuitem_id = ? AND item_category = ?");){
-        
-        // Set all params to SQL statement
-        stmt.setInt(1, id);
-        stmt.setString(2, category);
+  public void processCartItems(){
+    try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO OrderDetails (order_id, menuitem_id, quantity, item_total) VALUES (?, ?, ?, ?)")){
 
-        // Return result
-        rs = stmt.executeQuery();
+        conn.setAutoCommit(false);
         
+        for (MenuItemData item : addedToCart){
+          stmt.setInt(1, currentOrderId);
+          stmt.setInt(2, item.id);
+          stmt.setInt(3, item.quantity);
+          stmt.setBigDecimal(4, new BigDecimal(Float.toString(item.price * item.quantity)));
+          stmt.addBatch();
         }
-        catch (SQLException e){
-          System.err.print(e);
+
+      int[] updates = stmt.executeBatch();
+
+      for (int i = 0; i < updates.length; i++) {
+        if (updates[i] == -2){
+          System.out.println("Execution " + i + ": unknown number of rows updated");
+        } else {
+          System.out.println("Execution " + i + "successful: " + updates[i] + " rows updated");
         }
+      }
+
+      conn.commit();
+
       
-    return rs;
- 
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   public ArrayList<MenuItemData> getMenuItemsByCategory(String category) {
@@ -61,65 +92,69 @@ public class RestaurantModel {
           ));
         }
     } catch (SQLException e) {
-        e.printStackTrace();
+      e.printStackTrace();
     }
     return items;
 }
-  
-  public float updateTotal(){
-    float total = 0;
-
-    for (MenuItemData item : addedToCart){
-      total += item.price * item.quantity;
-    }
-
-    return total;
-  }
 
   public void addToCart(MenuItemData itemData){
+    //* If item exists in cart, update existing quantity
     for (MenuItemData existing : addedToCart){
       if (existing.id == itemData.id){
         existing.quantity += 1;
+        currentTotal += existing.price;
         return;
-      };
+      }
     }
+
+    currentTotal += itemData.price * itemData.quantity;
     addedToCart.add(itemData);
   }
 
   public void subtractQuantity(MenuItemData itemData){
-    if (itemData.quantity <= 1 ){ 
-      for (MenuItemData existing : addedToCart){
-        if (existing.id == itemData.id){
+    for (MenuItemData existing : addedToCart){
+      if (existing.id == itemData.id){
+        if (existing.quantity <= 1){
+          currentTotal -= existing.price;
           addedToCart.remove(existing);
-          return;
+        } else {
+          existing.quantity -= 1;
+          currentTotal -= existing.price;
         }
+        return;
       }
-    } else {
-        for (MenuItemData existing : addedToCart){
-          if (existing.id == itemData.id){
-            existing.quantity -= 1;
-            return;
-          };
-        }
     }
   }
-  
+    
   public void addQuantity(MenuItemData itemData){
     for (MenuItemData existing : addedToCart){
       if (existing.id == itemData.id){
         existing.quantity += 1;
+        currentTotal += existing.price;
         return;
-      };
+      }
     }
   }
 
+
   public void createNewOrder(){
+    currentTotal = 0;
     addedToCart = new ArrayList<>();
   }
 
   public ArrayList<MenuItemData> getAddedToCart (){
     return addedToCart;
   }
+
+  public int getCurrentOrderId() {
+    return currentOrderId;
+  }
+
+  public float getCurrentTotal() {
+    return currentTotal;
+  }
+
+  
   
 
 

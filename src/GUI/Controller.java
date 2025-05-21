@@ -19,6 +19,26 @@ public class Controller {
     view.displayComponent(view.getBottomBar(), state);
   }
 
+  //* Confirm Dialog Controller
+  public void processOrder(String paymentType, String orderType){
+    model.createOrder(paymentType, orderType);
+
+    model.processCartItems();
+
+  }
+
+  //* Checkout Panel Controller
+  public void prepareTopCheckout(){
+    TopBar topBar = view.getTopBar();
+
+    topBar.configureReturnButton("BACK", e -> {
+      view.displayPanel("CartP");
+      prepareTopCart();
+    });
+
+  }
+
+  //* Cart Panel Controller
   public void prepareTopCart(){
     TopBar topBar = view.getTopBar();
 
@@ -26,16 +46,6 @@ public class Controller {
     topBar.configureReturnButton("BACK", e -> {
       view.displayPanel("MenuP");
       resetTopBarBehaviorCart();
-    });
-
-  }
-
-  public void prepareTopCheckout(){
-    TopBar topBar = view.getTopBar();
-
-    topBar.configureReturnButton("BACK", e -> {
-      view.displayPanel("CartP");
-      prepareTopCart();
     });
 
   }
@@ -53,7 +63,6 @@ public class Controller {
       displayBars(false);
     });
   }
-
 
   // * Menu Panel Controller 
   public void displayCategory(String category){{
@@ -74,28 +83,46 @@ public class Controller {
   // * Cart Panel Controller
   public void modelCreateNewOrder(){
     CartPanel CartPanel = view.getCartPanel();
+    BottomBar bottomBar = view.getBottomBar();
+
     CartPanel.resetDisplay();
     model.createNewOrder();
+    bottomBar.setTotalTextField(model.getCurrentTotal());
   }
 
   public void printCart(){
     ArrayList<MenuItemData> addedToCart = model.getAddedToCart();
+    int i = model.getCurrentOrderId();
+    float f = model.getCurrentTotal();
 
     for (MenuItemData item : addedToCart){
-      System.out.print(item.id);
-      System.out.print(item.name);
-      System.out.print(item.quantity);
-      System.out.print(item.price);
+      System.out.println(item.id);
+      System.out.println(item.name);
+      System.out.println(item.quantity);
+      System.out.println(item.price);
     }
+    
+    System.out.printf("%d, %.1f", i, f);
+
   }
 
+  public void emptyCart(){
+    CartPanel cartPanel = view.getCartPanel();
+    BottomBar bottomBar = view.getBottomBar();
+
+    model.createNewOrder();
+    bottomBar.setTotalTextField(model.getCurrentTotal());
+    cartPanel.resetDisplay();
+
+  }
+  
   public void addToCart(MenuItemData itemData){
     // Model deduplication and quantity bump
     model.addToCart(itemData);
     BottomBar bottomBar = view.getBottomBar();
 
     CartPanel cartPanel = view.getCartPanel();
-    bottomBar.setTotalTextField(model.updateTotal());
+    bottomBar.setTotalTextField(model.getCurrentTotal());
     
     cartPanel.resetDisplay();
 
@@ -111,12 +138,13 @@ public class Controller {
     
     // Model deduplication and quantity 
     model.subtractQuantity(itemData);
-    bottomBar.setTotalTextField(model.updateTotal());
     cartPanel.resetDisplay();
+    bottomBar.setTotalTextField(model.getCurrentTotal());
     
     for (MenuItemData item : model.getAddedToCart()) {
       cartPanel.addOrderItem(item);
     }
+
     
   } 
 
@@ -126,8 +154,8 @@ public class Controller {
     
     // Model deduplication and quantity 
     model.addQuantity(itemData);
-    bottomBar.setTotalTextField(model.updateTotal());
     CartPanel.resetDisplay();
+    bottomBar.setTotalTextField(model.getCurrentTotal());
     
     
     for (MenuItemData item : model.getAddedToCart()) {
@@ -136,17 +164,4 @@ public class Controller {
     
   } 
 
-  public void emptyCart(){
-    CartPanel cartPanel = view.getCartPanel();
-    BottomBar bottomBar = view.getBottomBar();
-
-    model.createNewOrder();
-    bottomBar.setTotalTextField(model.updateTotal());
-    cartPanel.resetDisplay();
-
-  }
-
-  public void handleMenuItem(MenuItemData itemData){
-    
-  }
 }
