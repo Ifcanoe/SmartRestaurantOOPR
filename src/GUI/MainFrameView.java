@@ -27,8 +27,12 @@ public class MainFrameView extends JFrame {
     // Settings for MainFrameView
       setLayout(new BorderLayout());
       setTitle("Smart Restaurant");
+      setUndecorated(true);
+      pack();
       setSize(600, 770);
+      setLocationRelativeTo(null);
       setVisible(true);
+    
       
 
     // Set the top, bottom, and main panels
@@ -50,7 +54,6 @@ public class MainFrameView extends JFrame {
       topBar.setVisible(false);
       bottomBar.setVisible(false);
       mainPanel.setVisible(true);
-      
 
   }
 
