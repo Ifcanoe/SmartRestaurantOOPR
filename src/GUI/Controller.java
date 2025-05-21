@@ -19,23 +19,33 @@ public class Controller {
     view.displayComponent(view.getBottomBar(), state);
   }
 
-  public void prepareTopCheckout(){
+  public void prepareTopCart(){
     TopBar topBar = view.getTopBar();
 
     topBar.configureCartButton(false, e -> {});
     topBar.configureReturnButton("BACK", e -> {
       view.displayPanel("MenuP");
-      resetTopBarBehavior();
+      resetTopBarBehaviorCart();
     });
 
   }
 
-  public void resetTopBarBehavior(){
+  public void prepareTopCheckout(){
+    TopBar topBar = view.getTopBar();
+
+    topBar.configureReturnButton("BACK", e -> {
+      view.displayPanel("CartP");
+      prepareTopCart();
+    });
+
+  }
+
+  public void resetTopBarBehaviorCart(){
     TopBar topBar = view.getTopBar();
 
     topBar.configureCartButton(true, e -> {
       switchPanel("CartP");
-      prepareTopCheckout();
+      prepareTopCart();
     });
 
     topBar.configureReturnButton("BACK TO MAIN MENU", e -> {
@@ -112,9 +122,11 @@ public class Controller {
 
   public void addItem(MenuItemData itemData){
     CartPanel CartPanel = view.getCartPanel();
+    BottomBar bottomBar = view.getBottomBar();
     
     // Model deduplication and quantity 
     model.addQuantity(itemData);
+    bottomBar.setTotalTextField(model.updateTotal());
     CartPanel.resetDisplay();
     
     
@@ -123,6 +135,16 @@ public class Controller {
     }
     
   } 
+
+  public void emptyCart(){
+    CartPanel cartPanel = view.getCartPanel();
+    BottomBar bottomBar = view.getBottomBar();
+
+    model.createNewOrder();
+    bottomBar.setTotalTextField(model.updateTotal());
+    cartPanel.resetDisplay();
+
+  }
 
   public void handleMenuItem(MenuItemData itemData){
     

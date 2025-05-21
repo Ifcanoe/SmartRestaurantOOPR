@@ -49,7 +49,7 @@ public class TopBar extends JPanel {
     
     cartB.addActionListener(e -> {
       mvc.switchPanel("CartP");
-      mvc.prepareTopCheckout();
+      mvc.prepareTopCart();
     });
 
     gbc.weightx = 0.1/0.2;
