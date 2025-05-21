@@ -66,6 +66,16 @@ public class RestaurantModel {
     return items;
 }
   
+  public float updateTotal(){
+    float total = 0;
+
+    for (MenuItemData item : addedToCart){
+      total += item.price;
+    }
+
+    return total;
+  }
+
   public void addToCart(MenuItemData itemData){
     for (MenuItemData existing : addedToCart){
       if (existing.id == itemData.id){

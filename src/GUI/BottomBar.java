@@ -9,12 +9,27 @@ import Utilities.UIUtilities;
 import java.awt.*;
 
 public class BottomBar extends JPanel {
-  JLabel totalLabel = new JLabel();
-  JTextField totalTextPane = new JTextField();
-  JLabel cartLabel = new JLabel();
-  JLabel currencySignLabel = new JLabel("₱");
-  GridBagLayout bottomBarLayout = new GridBagLayout();
-  GridBagConstraints gbc = new GridBagConstraints();
+  private JLabel totalLabel = new JLabel();
+  private JTextField totalTextField = new JTextField();
+  private JLabel cartLabel = new JLabel();
+  private JLabel currencySignLabel = new JLabel("₱");
+  private GridBagLayout bottomBarLayout = new GridBagLayout();
+  private GridBagConstraints gbc = new GridBagConstraints();
+
+  public void setTotalTextField(float total){
+    if (total > 0){
+      totalTextField.setText(Float.toString(total));
+    } else {
+      totalTextField.setText(null);
+    }
+    
+    totalTextField.revalidate();
+    totalTextField.repaint();
+  }
+
+  public float getTotal(){
+    return Float.parseFloat((totalTextField.getText()));
+  }
 
   BottomBar(Controller mvc){
 
@@ -33,17 +48,16 @@ public class BottomBar extends JPanel {
     UIUtilities.setFontSize(currencySignLabel, 20f);
 
     // Total Text Field Settings
-    totalTextPane.setBorder(new EmptyBorder(0, 0, 0, 0));
-    totalTextPane.setSize(100, 100);
-    totalTextPane.setHorizontalAlignment(SwingConstants.CENTER);
-    totalTextPane.setFont(UIUtilities.baseFont.deriveFont(Font.PLAIN, 24f));
-    totalTextPane.setEditable(false);
+    totalTextField.setBorder(new EmptyBorder(0, 0, 0, 0));
+    totalTextField.setSize(100, 100);
+    totalTextField.setHorizontalAlignment(SwingConstants.CENTER);
+    totalTextField.setFont(UIUtilities.baseFont.deriveFont(Font.PLAIN, 24f));
+    totalTextField.setForeground(UIUtilities.RESTO_GRAY);
+    totalTextField.setEditable(false);
 
     // Cart Label Settings
     cartLabel.setHorizontalAlignment(SwingConstants.CENTER);
     cartLabel.setIcon(ImageUtilities.getImage("/images/icons/cart1.png", 50, 50));
-    
-      
     
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 0.1/0.3;
@@ -59,7 +73,7 @@ public class BottomBar extends JPanel {
     gbc.weightx = 1;
     gbc.insets = new Insets(0, 0, 0, 0);
     gbc.ipady = 40;
-    GridBagUtilities.addObject(totalTextPane, this, bottomBarLayout, gbc, 0, 2, 1, 1);
+    GridBagUtilities.addObject(totalTextField, this, bottomBarLayout, gbc, 0, 2, 1, 1);
 
     gbc.weightx = 0.1/0.3;
     gbc.insets = new Insets(0, 10, 0, 10);

@@ -27,14 +27,14 @@ public class Controller {
       view.displayPanel("MenuP");
       resetTopBarBehavior();
     });
-  
+
   }
 
   public void resetTopBarBehavior(){
     TopBar topBar = view.getTopBar();
 
     topBar.configureCartButton(true, e -> {
-      switchPanel("CheckoutP");
+      switchPanel("CartP");
       prepareTopCheckout();
     });
 
@@ -61,9 +61,10 @@ public class Controller {
   
   }
 
+  // * Cart Panel Controller
   public void modelCreateNewOrder(){
-    CheckoutPanel checkoutPanel = view.getCheckoutPanel();
-    checkoutPanel.resetDisplay();
+    CartPanel CartPanel = view.getCartPanel();
+    CartPanel.resetDisplay();
     model.createNewOrder();
   }
 
@@ -81,40 +82,44 @@ public class Controller {
   public void addToCart(MenuItemData itemData){
     // Model deduplication and quantity bump
     model.addToCart(itemData);
+    BottomBar bottomBar = view.getBottomBar();
 
-    CheckoutPanel checkoutPanel = view.getCheckoutPanel();
-    checkoutPanel.resetDisplay();
+    CartPanel cartPanel = view.getCartPanel();
+    bottomBar.setTotalTextField(model.updateTotal());
+    
+    cartPanel.resetDisplay();
 
     for (MenuItemData item : model.getAddedToCart()) {
-      checkoutPanel.addOrderItem(item);
+      cartPanel.addOrderItem(item);
     }
 
   }
 
   public void subtractItem(MenuItemData itemData){
-    CheckoutPanel checkoutPanel = view.getCheckoutPanel();
+    CartPanel cartPanel = view.getCartPanel();
+    BottomBar bottomBar = view.getBottomBar();
     
     // Model deduplication and quantity 
     model.subtractQuantity(itemData);
-    checkoutPanel.resetDisplay();
-    
+    bottomBar.setTotalTextField(model.updateTotal());
+    cartPanel.resetDisplay();
     
     for (MenuItemData item : model.getAddedToCart()) {
-      checkoutPanel.addOrderItem(item);
+      cartPanel.addOrderItem(item);
     }
     
   } 
 
   public void addItem(MenuItemData itemData){
-    CheckoutPanel checkoutPanel = view.getCheckoutPanel();
+    CartPanel CartPanel = view.getCartPanel();
     
     // Model deduplication and quantity 
     model.addQuantity(itemData);
-    checkoutPanel.resetDisplay();
+    CartPanel.resetDisplay();
     
     
     for (MenuItemData item : model.getAddedToCart()) {
-      checkoutPanel.addOrderItem(item);
+      CartPanel.addOrderItem(item);
     }
     
   } 
