@@ -70,7 +70,7 @@ public class RestaurantModel {
     float total = 0;
 
     for (MenuItemData item : addedToCart){
-      total += item.price;
+      total += item.price * item.quantity;
     }
 
     return total;
