@@ -13,6 +13,8 @@ public class RestaurantModel {
   private int currentOrderId = -1;
   private float currentTotal = 0f;
 
+
+  // * Order Processing
   public void createOrder(String paymentType, String orderType){
 
     try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -68,6 +70,7 @@ public class RestaurantModel {
     }
   }
 
+  // * Query Processes
   public ArrayList<MenuItemData> getMenuItemsByCategory(String category) {
     ArrayList<MenuItemData> items = new ArrayList<>();
 
@@ -95,7 +98,37 @@ public class RestaurantModel {
       e.printStackTrace();
     }
     return items;
-}
+  }
+
+  public ArrayList<MenuItemData> getMenuItemsByCategory(String category, ArrayList<String> allergens){
+    ArrayList<MenuItemData> items = new ArrayList<>();
+
+    try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM MenuItems WHERE item_category = ?")){
+
+        // Set params to statement 
+        stmt.setString(1, category);
+        ResultSet rs = stmt.executeQuery();
+
+        // Iterate through and set MenuItemData to OrderData
+        while (rs.next()) {
+          items.add(new MenuItemData(
+            rs.getInt("menuitem_id"),
+            rs.getString("item_name"),
+            rs.getInt("item_quantity"),
+            rs.getFloat("item_price"),
+            rs.getString("item_code"),
+            rs.getString("item_category"),
+            rs.getString("image_link"),
+            rs.getInt("calories")
+          ));
+        }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return items;
+  }
+
 
   public void addToCart(MenuItemData itemData){
     //* If item exists in cart, update existing quantity
@@ -153,9 +186,5 @@ public class RestaurantModel {
   public float getCurrentTotal() {
     return currentTotal;
   }
-
-  
-  
-
 
 }
