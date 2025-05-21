@@ -1,12 +1,12 @@
-import java.awt.MenuItem;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class RestaurantModel {
   private static final String DB_URL = "jdbc:mysql://localhost/SmartRestaurant";
   private static final String USER = "root";
   private static final String PASS = "mysql";
+
+  private ArrayList<MenuItemData> addedToCart;
 
   public void printArray(ArrayList<MenuItemData> arr){
     for (MenuItemData thing : arr){
@@ -46,7 +46,7 @@ public class RestaurantModel {
         stmt.setString(1, category);
         ResultSet rs = stmt.executeQuery();
 
-        // int id, String name, int quantity, float price, String code, String category, String imagePath, int calories
+        // Iterate through and set MenuItemData to OrderData
         while (rs.next()) {
           items.add(new MenuItemData(
             rs.getInt("menuitem_id"),
@@ -64,8 +64,51 @@ public class RestaurantModel {
     }
     return items;
 }
+  
+  public void addToCart(MenuItemData itemData){
+    for (MenuItemData existing : addedToCart){
+      if (existing.id == itemData.id){
+        existing.quantity += 1;
+        return;
+      };
+    }
+    addedToCart.add(itemData);
+  }
 
+  public void subtractQuantity(MenuItemData itemData){
+    if (itemData.quantity <= 1 ){ 
+      for (MenuItemData existing : addedToCart){
+        if (existing.id == itemData.id){
+          addedToCart.remove(existing);
+          return;
+        }
+      }
+    } else {
+        for (MenuItemData existing : addedToCart){
+          if (existing.id == itemData.id){
+            existing.quantity -= 1;
+            return;
+          };
+        }
+    }
+  }
+  
+  public void addQuantity(MenuItemData itemData){
+    for (MenuItemData existing : addedToCart){
+      if (existing.id == itemData.id){
+        existing.quantity += 1;
+        return;
+      };
+    }
+  }
 
+  public void createNewOrder(){
+    addedToCart = new ArrayList<>();
+  }
+
+  public ArrayList<MenuItemData> getAddedToCart (){
+    return addedToCart;
+  }
   
 
 

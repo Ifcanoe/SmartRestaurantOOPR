@@ -1,15 +1,14 @@
 import javax.swing.*;
-
 import java.awt.*;
 import java.io.*;
+import javax.swing.text.StyledDocument;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.SimpleAttributeSet;
 
-//TODO Turn reusable code into UIUtilities
-//TODO Break it up into files
-//TODO Overload GridBagUtilities
+
 
 class RoundedButtonS extends JButton {
   private int cornerRadius = 50;
-  private Color backgroundColor;
   private Color textColor = UIUtilities.CREAM;
 
   public RoundedButtonS(String text) {
@@ -41,7 +40,6 @@ class RoundedButtonS extends JButton {
 
   @Override
   public void setBackground(Color bg) {
-    this.backgroundColor = bg;
     super.setBackground(bg);
   }
 
@@ -71,6 +69,39 @@ class RoundedButtonS extends JButton {
     repaint();
   }
 
+}
+
+class CenteredTextPane extends JTextPane {
+
+  CenteredTextPane() {
+    setEditable(false);
+    setOpaque(false);
+    setBackground(new Color(0, 0, 0, 0));
+
+    // Default horizontal alignment
+    setParagraphCentered();
+  }
+
+  private void setParagraphCentered() {
+    StyledDocument doc = getStyledDocument();
+    SimpleAttributeSet center = new SimpleAttributeSet();
+    StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+    doc.setParagraphAttributes(0, doc.getLength(), center, false);
+  }
+
+  @Override
+  public void setText(String t) {
+    super.setText(t);
+    setParagraphCentered();
+  }
+
+  @Override
+  public Dimension getPreferredSize() {
+    // Force the height to fit the full content
+    Dimension d = super.getPreferredSize();
+    d.height = getFontMetrics(getFont()).getHeight() * getDocument().getDefaultRootElement().getElementCount();
+    return d;
+  }
 }
 
 class GridBagUtilities {
@@ -162,10 +193,12 @@ class UIUtilities {
     UIManager.put("RadioButton.foreground", RESTO_GRAY);
   }
 
-
-
   public static void applyDefaultBackground() {
     UIManager.put("Panel.background", CREAM);
+  }
+
+  public static void applyDefaultEditable() {
+    UIManager.put("Label.editable", false);
   }
 
   
@@ -266,6 +299,7 @@ public class Main {
     UIUtilities.applyDefaultBackground();
     UIUtilities.applyDefaultForeground();
     UIUtilities.applyDefaultFont();
+    UIUtilities.applyDefaultEditable();
     new MainFrameView();
   }
 

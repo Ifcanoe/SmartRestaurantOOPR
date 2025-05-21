@@ -1,19 +1,37 @@
-import javax.print.attribute.standard.JobKOctetsProcessed;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-
-
 
 public class MenuPanel extends JPanel{
 
   private int item_count = 0;
 
-  public void addMenuItem(MenuItemData data){
-    MenuItemContainer menuItem = new MenuItemContainer(data);
-    GridBagConstraints gbc = new GridBagConstraints();
+  private GridBagLayout menuPanelLayout = new GridBagLayout();
+  private GridBagConstraints gbc = new GridBagConstraints();
+
+  private GridBagLayout menuSelectorPanellLayout = new GridBagLayout();
+  private GridBagConstraints gbc2 = new GridBagConstraints();
+  private JPanel menuSelectorPanel = new JPanel();
+
+  private JButton allergensB = new JButton("ALLERGENS");
+  private JButton caloriesB = new JButton("CALORIES");
+  private JTextField budgetTextField = new JTextField();
+
+  private JLabel menuLabel = new JLabel();
+  private JButton mDishesB = new JButton("MAIN DISHES");
+  private JButton sidesB = new JButton("SIDES");
+  private JButton drinksB = new JButton("DRINKS");
+  private JButton dessertsB = new JButton("DESSERTS");
+  private Controller mvc;
+
+  private JPanel menuItemPanel = new JPanel();
+  private JScrollPane mipScrollPane = new JScrollPane();
+
+  private GridBagLayout mipLayout = new GridBagLayout();
     
+  public void addMenuItem(MenuItemData data){
+    MenuItemContainer menuItem = new MenuItemContainer(data, mvc);
+    GridBagConstraints gbc = new GridBagConstraints();
     
     gbc.weightx = 0.1/0.3;
     gbc.insets = new Insets(2, 2, 2, 2);
@@ -32,109 +50,14 @@ public class MenuPanel extends JPanel{
     menuItemPanel.revalidate();
     menuItemPanel.repaint();
   }
-
-  private class MenuItemContainer extends JPanel{
-    private JLabel menuItemImage;
-    private JLabel menuItemName;
-    private JLabel menuItemCalCount;
-    private JLabel menuItemPrice;
-    private JButton orderButton;
-    
-    private MenuItemData menuItemData;
-
-    private JPanel orderPricePanel;
-    private BoxLayout layout;
-    private BoxLayout MICLayout;
-    
-    MenuItemContainer(MenuItemData data){ 
-      menuItemImage = new JLabel();
-      menuItemName = new JLabel();
-      menuItemCalCount = new JLabel();
-      menuItemPrice = new JLabel();
-      orderButton = new JButton();
-      orderPricePanel = new JPanel();
-
-      this.menuItemData = data;
-      
-      layout = new BoxLayout(orderPricePanel, BoxLayout.LINE_AXIS);
-      MICLayout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
-
-      setLayout(MICLayout);
-      setBackground(UIUtilities.RESTO_BROWN);
-      setBorder(new EmptyBorder(20, 0, 20, 0));
-      setPreferredSize(new Dimension(170, 235));
-
-      menuItemImage.setAlignmentX(CENTER_ALIGNMENT);
-      menuItemImage.setIcon(ImageUtilities.getImage(data.imagePath, 170, 95));
-      menuItemImage.setPreferredSize(new Dimension(170, 95));
-      
-      menuItemName.setAlignmentX(CENTER_ALIGNMENT);
-      menuItemName.setForeground(UIUtilities.CREAM);
-      menuItemName.setText(data.name);
-      
-      menuItemCalCount.setAlignmentX(CENTER_ALIGNMENT);
-      menuItemCalCount.setForeground(UIUtilities.CREAM);
-      menuItemCalCount.setText(Integer.toString(data.calories));
-      
-      menuItemPrice.setAlignmentX(CENTER_ALIGNMENT);
-      menuItemPrice.setForeground(UIUtilities.CREAM);
-      menuItemPrice.setText(Float.toString(data.price));
-      
-      orderButton.setAlignmentX(CENTER_ALIGNMENT);
-      orderButton.setFocusPainted(false);       
-      orderButton.setBorderPainted(false);
-      orderButton.setForeground(UIUtilities.CREAM);
-      orderButton.setBackground(UIUtilities.ORANGE);
-      orderButton.setText("+");
-      UIUtilities.setFontSize(orderButton, 20f);
-
-      orderPricePanel.setAlignmentX(CENTER_ALIGNMENT);
-      orderPricePanel.setBackground(UIUtilities.ORANGE);
-      orderPricePanel.setLayout(layout);
-      orderPricePanel.setBorder(new EmptyBorder(0, 10, 0, 0));
-
-      orderPricePanel.add(menuItemPrice);
-      orderPricePanel.add(orderButton);
-
-      add(menuItemImage);
-      add(Box.createRigidArea(new Dimension(0, 10)));
-      add(menuItemName);
-      add(Box.createRigidArea(new Dimension(0, 10)));
-      add(menuItemCalCount);
-      add(Box.createRigidArea(new Dimension(0, 10)));
-      add(orderPricePanel);
-
-    }
-
-    public MenuItemData getMenuItemData(){
-      return menuItemData;
-    }
-
+  
+  public JPanel getMenuPanel() {
+    return menuItemPanel;
   }
 
-  private GridBagLayout menuPanelLayout = new GridBagLayout();
-  private GridBagConstraints gbc = new GridBagConstraints();
-
-  private GridBagLayout menuSelectorPanellLayout = new GridBagLayout();
-  private GridBagConstraints gbc2 = new GridBagConstraints();
-  private JPanel menuSelectorPanel = new JPanel();
-
-  private JButton allergensB = new JButton("ALLERGENS");
-  private JButton caloriesB = new JButton("CALORIES");
-  private JTextField budgetTextField = new JTextField();
-
-  private JLabel menuLabel = new JLabel();
-  private JButton mDishesB = new JButton("MAIN DISHES");
-  private JButton sidesB = new JButton("SIDES");
-  private JButton drinksB = new JButton("DRINKS");
-  private JButton dessertsB = new JButton("DESSERTS");
-
-  private JPanel menuItemPanel = new JPanel();
-  private JScrollPane mipScrollPane = new JScrollPane();
-
-  private GridBagLayout mipLayout = new GridBagLayout();
-    
     MenuPanel(Controller mvc){
+
+    this.mvc = mvc;
 
     // Menu Panel Settings
     setBackground(UIUtilities.CREAM);
@@ -218,6 +141,7 @@ public class MenuPanel extends JPanel{
     mipScrollPane.setViewportView(menuItemPanel);
     mipScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
     mipScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    mipScrollPane.getVerticalScrollBar().setUnitIncrement(20);
 
     // Menu Selector Panel Settings
     menuSelectorPanel.setLayout(menuSelectorPanellLayout);
@@ -258,9 +182,6 @@ public class MenuPanel extends JPanel{
 
   }
 
-  public JPanel getMenuPanel() {
-    return menuItemPanel;
-  }
-
+  
 }
 

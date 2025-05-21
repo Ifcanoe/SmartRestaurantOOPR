@@ -1,7 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
-import java.sql.ResultSet;
-
 
 public class Controller {
   private MainFrameView view;
@@ -46,19 +43,82 @@ public class Controller {
     });
   }
 
+
   // * Menu Panel Controller 
   public void displayCategory(String category){{
-      MenuPanel menuPanel = view.getMenuPanel();
+    MenuPanel menuPanel = view.getMenuPanel();
 
-      // Reset display
-      menuPanel.resetDisplay();
+    // Reset display
+    menuPanel.resetDisplay();
 
-      List<MenuItemData> items = model.getMenuItemsByCategory(category);
+    ArrayList<MenuItemData> items = model.getMenuItemsByCategory(category);
 
-      for (MenuItemData item : items) {
-        menuPanel.addMenuItem(item);
-      }
+    for (MenuItemData item : items) {
+      menuPanel.addMenuItem(item);
     }
+  }
   
+  }
+
+  public void modelCreateNewOrder(){
+    CheckoutPanel checkoutPanel = view.getCheckoutPanel();
+    checkoutPanel.resetDisplay();
+    model.createNewOrder();
+  }
+
+  public void printCart(){
+    ArrayList<MenuItemData> addedToCart = model.getAddedToCart();
+
+    for (MenuItemData item : addedToCart){
+      System.out.print(item.id);
+      System.out.print(item.name);
+      System.out.print(item.quantity);
+      System.out.print(item.price);
+    }
+  }
+
+  public void addToCart(MenuItemData itemData){
+    // Model deduplication and quantity bump
+    model.addToCart(itemData);
+
+    CheckoutPanel checkoutPanel = view.getCheckoutPanel();
+    checkoutPanel.resetDisplay();
+
+    for (MenuItemData item : model.getAddedToCart()) {
+      checkoutPanel.addOrderItem(item);
+    }
+
+  }
+
+  public void subtractItem(MenuItemData itemData){
+    CheckoutPanel checkoutPanel = view.getCheckoutPanel();
+    
+    // Model deduplication and quantity 
+    model.subtractQuantity(itemData);
+    checkoutPanel.resetDisplay();
+    
+    
+    for (MenuItemData item : model.getAddedToCart()) {
+      checkoutPanel.addOrderItem(item);
+    }
+    
+  } 
+
+  public void addItem(MenuItemData itemData){
+    CheckoutPanel checkoutPanel = view.getCheckoutPanel();
+    
+    // Model deduplication and quantity 
+    model.addQuantity(itemData);
+    checkoutPanel.resetDisplay();
+    
+    
+    for (MenuItemData item : model.getAddedToCart()) {
+      checkoutPanel.addOrderItem(item);
+    }
+    
+  } 
+
+  public void handleMenuItem(MenuItemData itemData){
+    
   }
 }
