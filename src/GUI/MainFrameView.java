@@ -13,7 +13,6 @@ public class MainFrameView extends JFrame {
   private BottomBar bottomBar = new BottomBar(mvc);
   private StartPanel startPanel = new StartPanel(mvc);
   private MenuPanel menuPanel = new MenuPanel(mvc);
-  private AllergensPanel allergensPanel = new AllergensPanel(mvc);
   private CheckoutPanel checkoutPanel = new CheckoutPanel(mvc);
   private CartPanel CartPanel = new CartPanel(mvc);
 
@@ -46,7 +45,6 @@ public class MainFrameView extends JFrame {
     // Add panels to the mainPanel
       mainPanel.add(startPanel, "StartP");  
       mainPanel.add(menuPanel, "MenuP"); 
-      mainPanel.add(allergensPanel, "AllergenP");
       mainPanel.add(CartPanel, "CartP");
       mainPanel.add(checkoutPanel, "CheckoutP");
     
@@ -79,10 +77,6 @@ public class MainFrameView extends JFrame {
 
   public BottomBar getBottomBar(){
     return bottomBar;
-  }
-
-  public AllergensPanel getAllergensPanel(){
-    return allergensPanel;
   }
 
   public CartPanel getCartPanel() {
