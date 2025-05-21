@@ -5,6 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 import Utilities.GridBagUtilities;
 import Utilities.UIUtilities;
@@ -80,6 +81,9 @@ public class CartPanel extends JPanel{
     cancelAllButton.setBackground(UIUtilities.DARK_GREEN);
     cancelAllButton.setForeground(UIUtilities.CREAM);
     cancelAllButton.setText("CANCEL ALL");
+    cancelAllButton.addActionListener(e -> {
+      mvc.emptyCart();
+    });
 
     // Cancel All Button Settings
     payButton.setHorizontalAlignment(SwingConstants.CENTER);
@@ -90,12 +94,15 @@ public class CartPanel extends JPanel{
     payButton.setText("PROCEED TO PAY");
     payButton.addActionListener(e -> {
       mvc.printCart();
+      mvc.switchPanel("CheckoutP");
+      mvc.prepareTopCheckout();
     });
 
     // Orders Panel Scroll Pane Settings
     oPScrollPane.setViewportView(ordersPanel);
     oPScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
     oPScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    oPScrollPane.setBorder(null);
     oPScrollPane.getVerticalScrollBar().setUnitIncrement(20);
 
     // Orders Panel Settings
