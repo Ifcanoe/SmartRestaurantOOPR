@@ -1,8 +1,14 @@
+package GUI;
+
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.*;
 import javax.swing.border.*;
+
+import Utilities.GridBagUtilities;
+import Utilities.ImageUtilities;
+import Utilities.UIUtilities;
 
 public class OrderContainer extends JPanel{
 

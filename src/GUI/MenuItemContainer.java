@@ -1,5 +1,10 @@
+package GUI;
 import javax.swing.*;
 import javax.swing.border.*;
+
+import Utilities.ImageUtilities;
+import Utilities.UIUtilities;
+
 import java.awt.*;
 
 public class MenuItemContainer extends JPanel{

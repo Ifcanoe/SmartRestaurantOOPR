@@ -1,3 +1,4 @@
+package GUI;
 public class MenuItemData {
   public final int id;
   public final String name;

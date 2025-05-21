@@ -1,9 +1,13 @@
+package GUI;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.*;
+
+import Utilities.GridBagUtilities;
+import Utilities.UIUtilities;
 
 
 public class CheckoutPanel extends JPanel{

@@ -1,9 +1,14 @@
+package GUI;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import Utilities.GridBagUtilities;
+import Utilities.ImageUtilities;
+import Utilities.UIUtilities;
+
 import java.awt.*;
 
-class BottomBar extends JPanel {
+public class BottomBar extends JPanel {
   JLabel totalLabel = new JLabel();
   JTextField totalTextPane = new JTextField();
   JLabel cartLabel = new JLabel();

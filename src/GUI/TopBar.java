@@ -1,5 +1,11 @@
+package GUI;
 import javax.swing.*;
 import javax.swing.border.*;
+
+import Utilities.GridBagUtilities;
+import Utilities.ImageUtilities;
+import Utilities.UIUtilities;
+import GUI.CustomComponents.RoundedButtonS;
 
 import java.awt.*;
 import java.awt.event.ActionListener;

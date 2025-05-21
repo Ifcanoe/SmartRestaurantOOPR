@@ -1,5 +1,13 @@
+package GUI;
+
 import javax.swing.*;
 import java.awt.*;
+
+import GUI.CustomComponents.RoundedButtonS;
+import Utilities.GridBagUtilities;
+import Utilities.ImageUtilities;
+import Utilities.UIUtilities;
+
 
 public class StartPanel extends JPanel {
 

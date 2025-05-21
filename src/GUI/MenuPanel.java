@@ -1,6 +1,11 @@
+package GUI;
+
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
+
+import Utilities.GridBagUtilities;
+import Utilities.UIUtilities;
 
 public class MenuPanel extends JPanel{
 

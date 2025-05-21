@@ -1,3 +1,5 @@
+package GUI;
+
 public class OrdersData {
   public final MenuItemData menuItem;
   public final int id;
