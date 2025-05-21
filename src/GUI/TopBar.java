@@ -48,7 +48,7 @@ public class TopBar extends JPanel {
     cartB.setIcon(cartIcon);
     
     cartB.addActionListener(e -> {
-      mvc.switchPanel("CheckoutP");
+      mvc.switchPanel("CartP");
       mvc.prepareTopCheckout();
     });
 

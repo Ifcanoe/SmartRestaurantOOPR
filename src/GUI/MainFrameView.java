@@ -15,6 +15,7 @@ public class MainFrameView extends JFrame {
   private MenuPanel menuPanel = new MenuPanel(mvc);
   private AllergensPanel allergensPanel = new AllergensPanel(mvc);
   private CheckoutPanel checkoutPanel = new CheckoutPanel(mvc);
+  private CartPanel CartPanel = new CartPanel(mvc);
 
   // Variables
   CardLayout cLayout = new CardLayout();
@@ -42,13 +43,14 @@ public class MainFrameView extends JFrame {
       mainPanel.add(startPanel, "StartP");  
       mainPanel.add(menuPanel, "MenuP"); 
       mainPanel.add(allergensPanel, "AllergenP");
+      mainPanel.add(CartPanel, "CartP");
       mainPanel.add(checkoutPanel, "CheckoutP");
     
     // Visibility Checks
       topBar.setVisible(false);
       bottomBar.setVisible(false);
       mainPanel.setVisible(true);
-       
+      
 
   }
 
@@ -80,8 +82,8 @@ public class MainFrameView extends JFrame {
     return allergensPanel;
   }
 
-  public CheckoutPanel getCheckoutPanel() {
-    return checkoutPanel;
+  public CartPanel getCartPanel() {
+    return CartPanel;
   }
 
   
