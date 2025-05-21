@@ -46,7 +46,7 @@ public class OrderContainer extends JPanel{
 
     // Item Price Settings
     priceLabel.setForeground(UIUtilities.CREAM);
-    priceLabel.setText(Float.toString(itemData.price));
+    priceLabel.setText(String.format("₱%.2f", itemData.price));
 
     // Item Image Settings
     itemImage.setIcon(ImageUtilities.getImage(itemData.imagePath, 170, 95));

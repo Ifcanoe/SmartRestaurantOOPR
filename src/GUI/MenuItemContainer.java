@@ -52,11 +52,11 @@ public class MenuItemContainer extends JPanel{
             
       menuItemCalCount.setAlignmentX(CENTER_ALIGNMENT);
       menuItemCalCount.setForeground(UIUtilities.CREAM);
-      menuItemCalCount.setText(Integer.toString(data.calories));
+      menuItemCalCount.setText(String.format("%d Cs", data.calories));
       
       menuItemPrice.setAlignmentX(CENTER_ALIGNMENT);
       menuItemPrice.setForeground(UIUtilities.CREAM);
-      menuItemPrice.setText(Float.toString(data.price));
+      menuItemPrice.setText(String.format("₱%.2f", data.price));
       
       orderButton.setAlignmentX(CENTER_ALIGNMENT);
       orderButton.setFocusPainted(false);       
