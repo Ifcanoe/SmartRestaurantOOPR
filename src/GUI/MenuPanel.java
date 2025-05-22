@@ -3,6 +3,8 @@ package GUI;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -23,7 +25,7 @@ public class MenuPanel extends JPanel{
   private JPanel menuSelectorPanel = new JPanel();
 
   private JButton allergensB = new JButton("ALLERGENS");
-  private JButton caloriesB = new JButton("CALORIES");
+  private JButton submitBudgetB = new JButton("CALORIES");
   private JTextField budgetTextField = new JTextField();
 
   private JLabel menuLabel = new JLabel();
@@ -152,12 +154,16 @@ public class MenuPanel extends JPanel{
     });
 
     // Calories Button Settings
-    caloriesB.setHorizontalAlignment(SwingConstants.CENTER);
-    caloriesB.setFocusPainted(false);       
-    caloriesB.setBorderPainted(false);
-    caloriesB.setBackground(UIUtilities.DARK_GREEN);
-    caloriesB.setForeground(UIUtilities.CREAM);
-    caloriesB.setVisible(false);
+    submitBudgetB.setHorizontalAlignment(SwingConstants.CENTER);
+    submitBudgetB.setFocusPainted(false);       
+    submitBudgetB.setBorderPainted(false);
+    submitBudgetB.setBackground(UIUtilities.DARK_GREEN);
+    submitBudgetB.setForeground(UIUtilities.CREAM);
+    submitBudgetB.setVisible(true);
+    submitBudgetB.addActionListener(e -> {
+      mvc.doSomethingToGetText(getBudgetText());
+    });
+
 
     // Budget Text Field Settings
     budgetTextField.setHorizontalAlignment(JTextField.CENTER);
@@ -165,18 +171,15 @@ public class MenuPanel extends JPanel{
     budgetTextField.setForeground(UIUtilities.CREAM);
     budgetTextField.setBorder(null);
     budgetTextField.setText("BUDGET");
-    budgetTextField.addMouseListener(new MouseAdapter(){
+    budgetTextField.addFocusListener(new FocusAdapter() {
       @Override
-      public void mouseClicked(MouseEvent e) {
+      public void focusGained(FocusEvent e) {
         budgetTextField.setText("");
       }
-    });
 
-    budgetTextField.addKeyListener(new KeyAdapter() {
       @Override
-      public void keyReleased(KeyEvent e) {
-        getBudgetText();
-         
+      public void focusLost(FocusEvent e) {
+        budgetTextField.setText("BUDGET");
       }
     });
     // budgetTextField.setVisible(false);
@@ -198,7 +201,7 @@ public class MenuPanel extends JPanel{
     gbc.weightx = 0.1;
     gbc.insets = new Insets(0, 10, 0, 10);
     GridBagUtilities.addObject(allergensB, this, menuPanelLayout, gbc, 0, 0, 1, 1);
-    GridBagUtilities.addObject(caloriesB, this, menuPanelLayout, gbc, 0, 1, 1, 1);
+    GridBagUtilities.addObject(submitBudgetB, this, menuPanelLayout, gbc, 0, 1, 1, 1);
     
     gbc.weightx = 1;
     gbc.fill = GridBagConstraints.HORIZONTAL;

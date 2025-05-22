@@ -12,6 +12,7 @@ public class RestaurantModel {
   private ArrayList<MenuItemData> addedToCart;
   private int currentOrderId = -1;
   private float currentTotal = 0f;
+  private float currentBudget = 0f;
 
 
   // * Order Processing
@@ -85,7 +86,7 @@ public class RestaurantModel {
     ArrayList<MenuItemData> items = new ArrayList<>();
 
     try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM MenuItems WHERE item_category = ?")){
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM MenuItems WHERE item_category = ? AND ")){
 
         // Set params to statement 
         stmt.setString(1, category);
@@ -235,6 +236,10 @@ public class RestaurantModel {
 
   public float getCurrentTotal() {
     return currentTotal;
+  }
+
+  public void setCurrentBudget(float budget){
+    this.currentBudget = budget;
   }
 
 }
