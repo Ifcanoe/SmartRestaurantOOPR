@@ -92,8 +92,6 @@ public class AllergensDialog extends JDialog {
   private JPanel allergensPanel;
   private JLabel allergenInquiry = new JLabel();
   
-  private Controller mvc;
-  
   AllergensDialog(Controller mvc){
     setUndecorated(true);
     setPreferredSize(new Dimension(500, 220));

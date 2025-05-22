@@ -181,7 +181,6 @@ public class RestaurantModel {
     return allergens;
   }
 
-  
   public void addToCart(MenuItemData itemData){
     //* If item exists in cart, update existing quantity
     for (MenuItemData existing : addedToCart){
@@ -220,7 +219,6 @@ public class RestaurantModel {
       }
     }
   }
-
 
   public void createNewOrder(){
     currentTotal = 0;

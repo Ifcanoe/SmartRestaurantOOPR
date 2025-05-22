@@ -21,6 +21,10 @@ public class Controller {
     view.displayComponent(view.getBottomBar(), state);
   }
 
+  //* Budget Field Controller
+  
+
+
   //* Allergens Dialog Controller */
   public void displayAllergens(){
     MenuPanel menuPanel = view.getMenuPanel();
@@ -37,11 +41,14 @@ public class Controller {
   public void displayCategory(String category){
     MenuPanel menuPanel = view.getMenuPanel();
     ArrayList<String> selectedAllergens = menuPanel.getAllergensDialog().getSelectedAllergens();
+       
+  
 
     // Reset the display before adding new items
     menuPanel.resetDisplay();
 
     ArrayList<MenuItemData> items;
+
     if (selectedAllergens.isEmpty()){
       //* If no allergens are selected, display all items for the category
       items = model.getMenuItemsByCategory(category);
@@ -49,6 +56,9 @@ public class Controller {
       //* If allergens are selected, filter items based on those allergens
       items = model.getMenuItemsByCategory(category, selectedAllergens);
     }
+
+    
+
 
     for (MenuItemData item : items) {
       menuPanel.addMenuItem(item);

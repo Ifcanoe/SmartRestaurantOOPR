@@ -3,6 +3,8 @@ package GUI;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -71,6 +73,11 @@ public class MenuPanel extends JPanel{
   
   public AllergensDialog getAllergensDialog(){
     return allergensDialog;
+  }
+
+  public String getBudgetText(){
+    if (budgetTextField.getText().isEmpty()){ return null; }
+    return budgetTextField.getText();
   }
 
   MenuPanel(Controller mvc){
@@ -164,7 +171,15 @@ public class MenuPanel extends JPanel{
         budgetTextField.setText("");
       }
     });
-    budgetTextField.setVisible(false);
+
+    budgetTextField.addKeyListener(new KeyAdapter() {
+      @Override
+      public void keyReleased(KeyEvent e) {
+        getBudgetText();
+         
+      }
+    });
+    // budgetTextField.setVisible(false);
     
     // Menu Item Panel Settings
     menuItemPanel.setBackground(Color.WHITE);
