@@ -84,14 +84,27 @@ public class RestaurantModel {
   // * Query Processes
   public ArrayList<MenuItemData> getMenuItemsByCategory(String category) {
     ArrayList<MenuItemData> items = new ArrayList<>();
+    String SQL;
+    System.out.print(currentBudget);
+
+    if (currentBudget <= 0){
+      SQL = "SELECT * FROM MenuItems WHERE item_category = ?";
+    } else {
+      SQL = "SELECT * FROM MenuItems WHERE item_category = ? AND item_price < ?";
+    }
 
     try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM MenuItems WHERE item_category = ? AND ")){
+        PreparedStatement stmt = conn.prepareStatement(SQL)){
 
         // Set params to statement 
-        stmt.setString(1, category);
+        if (currentBudget <= 0){
+          stmt.setString(1, category);
+        } else {
+          stmt.setString(1, category);
+          stmt.setBigDecimal(2, new BigDecimal(Float.toString(currentBudget)));
+        }
         ResultSet rs = stmt.executeQuery();
-
+        
         // Iterate through and set MenuItemData to OrderData
         while (rs.next()) {
           items.add(new MenuItemData(
@@ -113,6 +126,7 @@ public class RestaurantModel {
 
   public ArrayList<MenuItemData> getMenuItemsByCategory(String category, ArrayList<String> allergens){
     ArrayList<MenuItemData> items = new ArrayList<>();
+    String SQL;
 
     StringBuilder sb = new StringBuilder();
 
@@ -125,22 +139,40 @@ public class RestaurantModel {
 
     String placeholders = sb.toString();
 
-    String SQL = "SELECT DISTINCT mi.* FROM MenuItems mi " +
+    if (currentBudget <= 0){
+    SQL = "SELECT DISTINCT mi.* FROM MenuItems mi " +
                 "WHERE mi.menuitem_id NOT IN ( " +
                 "  SELECT ma.menuitem_id FROM MenuItemAllergens ma " +
                 "  JOIN Allergens a ON ma.allergen_id = a.allergen_id " +
                 "  WHERE LOWER(a.allergen_name) IN (" + placeholders + ") " +
-                ") AND mi.item_category = ?";
+                ") AND mi.item_category = ?";  
+    } else {
+      SQL = "SELECT DISTINCT mi.* FROM MenuItems mi " +
+                "WHERE mi.menuitem_id NOT IN ( " +
+                "  SELECT ma.menuitem_id FROM MenuItemAllergens ma " +
+                "  JOIN Allergens a ON ma.allergen_id = a.allergen_id " +
+                "  WHERE LOWER(a.allergen_name) IN (" + placeholders + ") " +
+                ") AND mi.item_category = ? AND mi.item_price < ?";
+    }
+    
 
     try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
         PreparedStatement stmt = conn.prepareStatement(SQL)){
 
         // Set params to statement
-        for (int i = 0; i < allergens.size(); i++){
-          stmt.setString(i + 1, allergens.get(i).toLowerCase());
+        if (currentBudget <= 0){
+          for (int i = 0; i < allergens.size(); i++){
+            stmt.setString(i + 1, allergens.get(i).toLowerCase());
+          }
+          stmt.setString(allergens.size() + 1, category);
+        } else {  
+          for (int i = 0; i < allergens.size(); i++){
+            stmt.setString(i + 1, allergens.get(i).toLowerCase());
+          }
+          stmt.setString(allergens.size() + 1, category);
+          stmt.setBigDecimal(allergens.size() + 2, new BigDecimal(Float.toString(currentBudget)));
         }
-
-        stmt.setString(allergens.size() + 1, category);
+        
 
         ResultSet rs = stmt.executeQuery();
 

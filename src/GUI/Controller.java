@@ -22,7 +22,6 @@ public class Controller {
   }
 
   //* Budget Field Controller
-  
 
 
   //* Allergens Dialog Controller */
@@ -41,9 +40,10 @@ public class Controller {
   public void displayCategory(String category){
     MenuPanel menuPanel = view.getMenuPanel();
     ArrayList<String> selectedAllergens = menuPanel.getAllergensDialog().getSelectedAllergens();
-       
-  
+    model.setCurrentBudget(menuPanel.getBudgetText());
 
+
+  
     // Reset the display before adding new items
     menuPanel.resetDisplay();
 

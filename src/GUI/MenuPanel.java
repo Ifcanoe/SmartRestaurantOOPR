@@ -77,9 +77,17 @@ public class MenuPanel extends JPanel{
     return allergensDialog;
   }
 
-  public String getBudgetText(){
-    if (budgetTextField.getText().isEmpty()){ return null; }
-    return budgetTextField.getText();
+  public float getBudgetText(){
+    float budgetText;
+
+    try{
+      budgetText = Float.parseFloat(budgetTextField.getText());
+    } catch (NumberFormatException e){
+      return 0f;
+    }
+
+    return budgetText;
+     
   }
 
   MenuPanel(Controller mvc){
@@ -159,11 +167,7 @@ public class MenuPanel extends JPanel{
     submitBudgetB.setBorderPainted(false);
     submitBudgetB.setBackground(UIUtilities.DARK_GREEN);
     submitBudgetB.setForeground(UIUtilities.CREAM);
-    submitBudgetB.setVisible(true);
-    submitBudgetB.addActionListener(e -> {
-      mvc.doSomethingToGetText(getBudgetText());
-    });
-
+    submitBudgetB.setVisible(false);
 
     // Budget Text Field Settings
     budgetTextField.setHorizontalAlignment(JTextField.CENTER);
@@ -175,11 +179,6 @@ public class MenuPanel extends JPanel{
       @Override
       public void focusGained(FocusEvent e) {
         budgetTextField.setText("");
-      }
-
-      @Override
-      public void focusLost(FocusEvent e) {
-        budgetTextField.setText("BUDGET");
       }
     });
     // budgetTextField.setVisible(false);
