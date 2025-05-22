@@ -5,7 +5,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 import Utilities.GridBagUtilities;
 import Utilities.UIUtilities;
@@ -29,14 +28,6 @@ public class CartPanel extends JPanel{
     ordersPanel.repaint();
   }
 
-  //? Use for future implementation
-  public void fixDisplaySubtract(){
-    item_count--;
-
-    ordersPanel.revalidate();
-    orderPanel.repaint();
-  }
-
   public void resetDisplay(){
     item_count = 0;
 
@@ -49,7 +40,6 @@ public class CartPanel extends JPanel{
   private JPanel ordersPanel = new JPanel();
   private JButton cancelAllButton = new JButton();
   private JButton payButton = new JButton();
-  private JPanel orderPanel = new JPanel();
   private JScrollPane oPScrollPane = new JScrollPane();
   private Controller mvc;
 
@@ -63,6 +53,9 @@ public class CartPanel extends JPanel{
   GridBagLayout ordersPanelLayout = new GridBagLayout();
   GridBagConstraints oplgbc = new GridBagConstraints();
 
+  public OrderConfirm getOrderConfirm(){
+    return orderConfirmDialog;
+  }
 
   CartPanel(Controller mvc){
   
@@ -70,6 +63,7 @@ public class CartPanel extends JPanel{
     setLayout(CartPanelLayout);
     
     this.mvc = mvc;
+    orderConfirmDialog = new OrderConfirm(mvc);
 
     // Checkout Cart Label Settings
     checkoutCartLabel.setText("CART");
@@ -95,12 +89,9 @@ public class CartPanel extends JPanel{
     payButton.setForeground(UIUtilities.CREAM);
     payButton.setText("PROCEED TO PAY");
     payButton.addActionListener(e -> {
-      mvc.printCart();
-      orderConfirmDialog = new OrderConfirm(mvc);
+      // mvc.printCart();
+
       orderConfirmDialog.displayDialog(payButton);
-      
-      
-      
 
       //? Should we use this?
       // mvc.switchPanel("CheckoutP");
@@ -137,5 +128,10 @@ public class CartPanel extends JPanel{
     GridBagUtilities.addObject(cancelAllButton, this, CartPanelLayout, gbc, 2, 0, 1, 1);
     GridBagUtilities.addObject(payButton, this, CartPanelLayout, gbc, 2, 2, 1, 1);
 
+  }
+
+  public Object getOrderConfirmDialog() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getOrderConfirmDialog'");
   }
 }

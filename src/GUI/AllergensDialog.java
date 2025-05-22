@@ -5,16 +5,21 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Timer;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JApplet;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -24,132 +29,129 @@ import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import Utilities.GridBagUtilities;
 import Utilities.UIUtilities;
 
 public class AllergensDialog extends JDialog {
   
-  public void displayDialog(Component c){
+  private ArrayList<JCheckBox> allergenList;
 
+  
+  public void displayDialog(){
+    
     pack();
-    setLocationRelativeTo(c);
+    setLocationRelativeTo(null);
     setVisible(true);
-
+    
   }
   
-  private JPanel orderTypePanel;
-  private JPanel paymentTypePanel;
+  public void addAllergenItem(ArrayList<String> allergens){
+    
+    allergensPanel.removeAll();
 
-  private ButtonGroup orderTypeGroup;
-  private ButtonGroup paymentTypeGroup;
+    for (String allergen : allergens){
+      if (allergen == null){
+        return;
+      }
+      
+      JCheckBox allergenCheckBox = new JCheckBox(allergen);
+      allergenCheckBox.setBackground(null);
+      allergenCheckBox.setFocusable(false);
+      allergenList.add(allergenCheckBox);
+      allergensPanel.add(allergenCheckBox);
+    }
+    
+    allergensPanel.revalidate();
+    allergensPanel.repaint();
+  }
+  
+  public ArrayList<String> getSelectedAllergens(){
+    ArrayList<String> selectedAllergens = new ArrayList<>();
+    
 
-  private JRadioButton dineInButton;
-  private JRadioButton takeoutButton;
-  private JRadioButton cashTypeButton;
-  private JRadioButton cardTypeButton;
+    for (JCheckBox cb : allergenList){
+      if (cb.isSelected()){
+        selectedAllergens.add(cb.getText());
+      }
+    }
 
-  private JButton confirmPayButton;
 
-  private Dimension RADIOBUTTON_SIZE = new Dimension(107, 28);
+    return selectedAllergens;  
+  }
 
+  public void resetSelected(){
+    for (JCheckBox cb : allergenList){
+      cb.setSelected(false);
+    }
+  }
+  
+  
+  private JPanel buttonsPanel = new JPanel();
+  private JButton confirmAllergensButton = new JButton();
+  private JButton cancelAllergensButton = new JButton();
+  private JPanel allergensPanel;
+  private JLabel allergenInquiry = new JLabel();
+  
+  private Controller mvc;
   
   AllergensDialog(Controller mvc){
     setUndecorated(true);
+    setPreferredSize(new Dimension(500, 220));
+
+    //* Allergen List Settings
+    allergenList = new ArrayList<>();
+
+    
+    //* Allergens Panel Settings
+    allergensPanel = new JPanel();
+    allergensPanel.setAlignmentX(CENTER_ALIGNMENT);
+
+    //* Allergen Inquiry Settings
+    allergenInquiry.setAlignmentX(CENTER_ALIGNMENT);
+    allergenInquiry.setText("SELECT ANY ALLERGIES OR DIETARY RESTRICTIONS");
+    
+    //* Cancel Allergens Button Settings
+    cancelAllergensButton.setAlignmentX(CENTER_ALIGNMENT);
+    cancelAllergensButton.setForeground(UIUtilities.CREAM);
+    cancelAllergensButton.setBackground(UIUtilities.DARK_GREEN);
+    cancelAllergensButton.setText("CANCEL");
+    cancelAllergensButton.addActionListener(e -> {
+      resetSelected();
+      mvc.displayCategory("MainDish");
+      dispose();
+    });
+    
+    //* Confirm Allergens Button
+    confirmAllergensButton.setAlignmentX(CENTER_ALIGNMENT);
+    confirmAllergensButton.setForeground(UIUtilities.CREAM);
+    confirmAllergensButton.setBackground(UIUtilities.DARK_GREEN);
+    confirmAllergensButton.setText("CONFIRM ALLERGENS?");
+    confirmAllergensButton.addActionListener(e -> {
+      mvc.displayCategory("MainDish");
+      dispose();
+    });
+    
+    
+    //* Buttons Panel Settings
+    buttonsPanel.add(cancelAllergensButton);
+    buttonsPanel.add(confirmAllergensButton);
 
     //* Create on construct
-    
-    orderTypePanel = new JPanel(new FlowLayout());
-    paymentTypePanel = new JPanel(new FlowLayout());
-    orderTypeGroup = new ButtonGroup();
-    paymentTypeGroup = new ButtonGroup();
-    dineInButton = new JRadioButton();
-    takeoutButton = new JRadioButton();
-    cashTypeButton = new JRadioButton();
-    cardTypeButton = new JRadioButton();
-    confirmPayButton = new JButton();
-
-    Container orderConfirmPane = getContentPane();
-    orderConfirmPane.setLayout(new BoxLayout(orderConfirmPane, BoxLayout.PAGE_AXIS));
+    Container allergensPane = getContentPane();
+    allergensPane.setLayout(new BoxLayout(allergensPane, BoxLayout.PAGE_AXIS));
 
     //? Typecast Container into JComponent to paint border
-    ((JComponent) orderConfirmPane).setBorder(BorderFactory.createCompoundBorder(new LineBorder(Color.GRAY, 2), new EmptyBorder(5, 5, 5, 5)));
+    ((JComponent) allergensPane).setBorder(BorderFactory.createCompoundBorder(new LineBorder(Color.GRAY, 2), new EmptyBorder(5, 5, 5, 5)));
 
-    //* Confirm Pay Button
-    confirmPayButton.setAlignmentX(CENTER_ALIGNMENT);
-    confirmPayButton.setForeground(UIUtilities.CREAM);
-    confirmPayButton.setBackground(UIUtilities.DARK_GREEN);
-    confirmPayButton.setText("CONFIRM PAY");
+    allergensPane.add(allergenInquiry);
+    allergensPane.add(allergensPanel);
+    allergensPane.add(buttonsPanel);
 
-    confirmPayButton.addActionListener(e -> {
-      // Timer
-      String orderTypeSelection;
-      String paymentTypeSelection;
-      
-      if (orderTypeGroup.getSelection() == null || paymentTypeGroup.getSelection() == null){
-        dispose();
-        return;
-      } else {
-        orderTypeSelection = orderTypeGroup.getSelection().getActionCommand();
-        paymentTypeSelection = paymentTypeGroup.getSelection().getActionCommand();
-      }
+    pack();
 
-      mvc.processOrder(paymentTypeSelection, orderTypeSelection);
-      mvc.switchPanel("CheckoutP");
-      dispose();
-      
-    });
-
-    //* Dine In Button
-    dineInButton.setText("DINE IN");
-    dineInButton.setFocusable(false);
-    dineInButton.setBackground(null);
-    dineInButton.setActionCommand("DINE_IN");
-    dineInButton.setPreferredSize(RADIOBUTTON_SIZE);
     
-    //* Takeout Button
-    takeoutButton.setText("TAKEOUT");
-    takeoutButton.setFocusable(false);
-    takeoutButton.setBackground(null);
-    takeoutButton.setActionCommand("TAKEOUT");
-    takeoutButton.setPreferredSize(RADIOBUTTON_SIZE);
     
-    //* Cash Type Button
-    cashTypeButton.setText("CASH");
-    cashTypeButton.setFocusable(false);
-    cashTypeButton.setBackground(null);
-    cashTypeButton.setActionCommand("CASH");
-    cashTypeButton.setPreferredSize(RADIOBUTTON_SIZE);
-    
-    //* Card Type Button
-    cardTypeButton.setText("CARD");
-    cardTypeButton.setFocusable(false);
-    cardTypeButton.setBackground(null);
-    cardTypeButton.setActionCommand("CARD");
-    cardTypeButton.setPreferredSize(RADIOBUTTON_SIZE);
 
-    //* Order Type Group
-    orderTypeGroup.add(dineInButton);
-    orderTypeGroup.add(takeoutButton);
-
-    //* Payment Type Group
-    paymentTypeGroup.add(cashTypeButton);
-    paymentTypeGroup.add(cardTypeButton);
-
-    //* Order Type Panel Settings
-    orderTypePanel.setAlignmentX(CENTER_ALIGNMENT);
-    orderTypePanel.add(dineInButton);
-    orderTypePanel.add(takeoutButton);
-
-    //* Payment Type Panel Settings
-    paymentTypePanel.setAlignmentX(CENTER_ALIGNMENT);
-    paymentTypePanel.add(cashTypeButton);
-    paymentTypePanel.add(cardTypeButton);
-
-
-    orderConfirmPane.add(orderTypePanel);
-    orderConfirmPane.add(Box.createRigidArea(new Dimension(0, 3)));
-    orderConfirmPane.add(paymentTypePanel);
-    orderConfirmPane.add(Box.createRigidArea(new Dimension(0, 3)));
-    orderConfirmPane.add(confirmPayButton);
 
   }
 

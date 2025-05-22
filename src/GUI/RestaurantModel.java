@@ -43,6 +43,8 @@ public class RestaurantModel {
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO OrderDetails (order_id, menuitem_id, quantity, item_total) VALUES (?, ?, ?, ?)")){
 
         conn.setAutoCommit(false);
+
+        if (addedToCart.isEmpty()) { return; }
         
         for (MenuItemData item : addedToCart){
           stmt.setInt(1, currentOrderId);
@@ -103,11 +105,34 @@ public class RestaurantModel {
   public ArrayList<MenuItemData> getMenuItemsByCategory(String category, ArrayList<String> allergens){
     ArrayList<MenuItemData> items = new ArrayList<>();
 
-    try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM MenuItems WHERE item_category = ?")){
+    StringBuilder sb = new StringBuilder();
 
-        // Set params to statement 
-        stmt.setString(1, category);
+    for (int i = 0; i < allergens.size(); i++) {
+      sb.append("?");
+      if (i < allergens.size() - 1) {
+        sb.append(",");
+      }
+    }
+
+    String placeholders = sb.toString();
+
+    String SQL = "SELECT DISTINCT mi.* FROM MenuItems mi " +
+                "WHERE mi.menuitem_id NOT IN ( " +
+                "  SELECT ma.menuitem_id FROM MenuItemAllergens ma " +
+                "  JOIN Allergens a ON ma.allergen_id = a.allergen_id " +
+                "  WHERE LOWER(a.allergen_name) IN (" + placeholders + ") " +
+                ") AND mi.item_category = ?";
+
+    try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        PreparedStatement stmt = conn.prepareStatement(SQL)){
+
+        // Set params to statement
+        for (int i = 0; i < allergens.size(); i++){
+          stmt.setString(i + 1, allergens.get(i).toLowerCase());
+        }
+
+        stmt.setString(allergens.size() + 1, category);
+
         ResultSet rs = stmt.executeQuery();
 
         // Iterate through and set MenuItemData to OrderData
@@ -129,7 +154,26 @@ public class RestaurantModel {
     return items;
   }
 
+  public ArrayList<String> getAllergens(){
+    ArrayList<String> allergens = new ArrayList<>();
 
+    try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        Statement stmt = conn.createStatement()){
+
+        ResultSet rs = stmt.executeQuery("SELECT allergen_name FROM allergens");
+
+        // Iterate through query and set data to allergens
+        while (rs.next()) {
+          allergens.add(rs.getString("allergen_name"));
+        }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return allergens;
+  }
+
+  
   public void addToCart(MenuItemData itemData){
     //* If item exists in cart, update existing quantity
     for (MenuItemData existing : addedToCart){

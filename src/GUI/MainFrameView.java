@@ -32,8 +32,6 @@ public class MainFrameView extends JFrame {
       setLocationRelativeTo(null);
       setVisible(true);
     
-      
-
     // Set the top, bottom, and main panels
       add(topBar, BorderLayout.PAGE_START);
       add(bottomBar, BorderLayout.PAGE_END);

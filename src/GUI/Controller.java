@@ -5,6 +5,8 @@ public class Controller {
   private MainFrameView view;
   private RestaurantModel model;
 
+  private ArrayList<String> currentlySelectedAllergens = new ArrayList<>();
+
   public Controller(MainFrameView view, RestaurantModel model){
     this.view = view;
     this.model = model;
@@ -19,6 +21,41 @@ public class Controller {
     view.displayComponent(view.getBottomBar(), state);
   }
 
+  //* Allergens Dialog Controller */
+  public void displayAllergens(){
+    MenuPanel menuPanel = view.getMenuPanel();
+    AllergensDialog allergensDialog = menuPanel.getAllergensDialog();
+
+    ArrayList<String> allergens = model.getAllergens(); // Fetch all allergens from the model
+    allergensDialog.addAllergenItem(allergens);
+  }
+
+  public void resetCurrentlySelectedAllergens(){
+    currentlySelectedAllergens.clear();
+  }
+
+  public void displayCategory(String category){
+    MenuPanel menuPanel = view.getMenuPanel();
+    ArrayList<String> selectedAllergens = menuPanel.getAllergensDialog().getSelectedAllergens();
+
+    // Reset the display before adding new items
+    menuPanel.resetDisplay();
+
+    ArrayList<MenuItemData> items;
+    if (selectedAllergens.isEmpty()){
+      //* If no allergens are selected, display all items for the category
+      items = model.getMenuItemsByCategory(category);
+    } else {
+      //* If allergens are selected, filter items based on those allergens
+      items = model.getMenuItemsByCategory(category, selectedAllergens);
+    }
+
+    for (MenuItemData item : items) {
+      menuPanel.addMenuItem(item);
+    }
+  }
+  
+
   //* Confirm Dialog Controller
   public void processOrder(String paymentType, String orderType){
     model.createOrder(paymentType, orderType);
@@ -26,6 +63,7 @@ public class Controller {
     model.processCartItems();
 
   }
+  
 
   //* Checkout Panel Controller
   public void prepareTopCheckout(){
@@ -64,30 +102,16 @@ public class Controller {
     });
   }
 
-  // * Menu Panel Controller 
-  public void displayCategory(String category){{
-    MenuPanel menuPanel = view.getMenuPanel();
-
-    // Reset display
-    menuPanel.resetDisplay();
-
-    ArrayList<MenuItemData> items = model.getMenuItemsByCategory(category);
-
-    for (MenuItemData item : items) {
-      menuPanel.addMenuItem(item);
-    }
-  }
-  
-  }
-
   // * Cart Panel Controller
   public void modelCreateNewOrder(){
-    CartPanel CartPanel = view.getCartPanel();
+    CartPanel cartPanel = view.getCartPanel();
     BottomBar bottomBar = view.getBottomBar();
 
-    CartPanel.resetDisplay();
+    cartPanel.resetDisplay();
     model.createNewOrder();
     bottomBar.setTotalTextField(model.getCurrentTotal());
+
+    cartPanel.getOrderConfirm().resetState();
   }
 
   public void printCart(){

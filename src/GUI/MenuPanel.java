@@ -29,42 +29,54 @@ public class MenuPanel extends JPanel{
   private JButton sidesB = new JButton("SIDES");
   private JButton drinksB = new JButton("DRINKS");
   private JButton dessertsB = new JButton("DESSERTS");
+
   private Controller mvc;
+
+  private AllergensDialog allergensDialog;
 
   private JPanel menuItemPanel = new JPanel();
   private JScrollPane mipScrollPane = new JScrollPane();
 
   private GridBagLayout mipLayout = new GridBagLayout();
-    
+  
+  
   public void addMenuItem(MenuItemData data){
     MenuItemContainer menuItem = new MenuItemContainer(data, mvc);
     GridBagConstraints gbc = new GridBagConstraints();
     
     gbc.weightx = 0.1/0.3;
     gbc.insets = new Insets(2, 2, 2, 2);
-
+    
     GridBagUtilities.addObject(menuItem, menuItemPanel, mipLayout, gbc, item_count / 3, item_count % 3, 1, 1);
     item_count++;
-
+    
     menuItemPanel.revalidate();
     menuItemPanel.repaint();
   }
-
+  
+  
+  
   public void resetDisplay(){
     item_count = 0;
-
+    
     menuItemPanel.removeAll();
     menuItemPanel.revalidate();
     menuItemPanel.repaint();
+
   }
   
   public JPanel getMenuPanel() {
     return menuItemPanel;
   }
+  
+  public AllergensDialog getAllergensDialog(){
+    return allergensDialog;
+  }
 
-    MenuPanel(Controller mvc){
+  MenuPanel(Controller mvc){
 
     this.mvc = mvc;
+    this.allergensDialog = new AllergensDialog(this.mvc);
 
     // Menu Panel Settings
     setBackground(UIUtilities.CREAM);
@@ -123,10 +135,14 @@ public class MenuPanel extends JPanel{
 
     // Allergens Button Item Settings
     allergensB.setHorizontalAlignment(SwingConstants.CENTER);
-    allergensB.setFocusPainted(false);       
+    allergensB.setFocusPainted(false);
     allergensB.setBorderPainted(false);
     allergensB.setBackground(UIUtilities.DARK_GREEN);
     allergensB.setForeground(UIUtilities.CREAM);
+    allergensB.addActionListener(e -> {
+      mvc.displayAllergens();
+      allergensDialog.displayDialog();
+    });
 
     // Calories Button Settings
     caloriesB.setHorizontalAlignment(SwingConstants.CENTER);
@@ -134,6 +150,7 @@ public class MenuPanel extends JPanel{
     caloriesB.setBorderPainted(false);
     caloriesB.setBackground(UIUtilities.DARK_GREEN);
     caloriesB.setForeground(UIUtilities.CREAM);
+    caloriesB.setVisible(false);
 
     // Budget Text Field Settings
     budgetTextField.setHorizontalAlignment(JTextField.CENTER);
@@ -147,6 +164,7 @@ public class MenuPanel extends JPanel{
         budgetTextField.setText("");
       }
     });
+    budgetTextField.setVisible(false);
     
     // Menu Item Panel Settings
     menuItemPanel.setBackground(Color.WHITE);

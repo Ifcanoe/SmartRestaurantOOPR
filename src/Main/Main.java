@@ -1,6 +1,7 @@
 package Main;
 
 import Utilities.UIUtilities;
+
 // import Utilities.ImageUtilities;
 
 // import javax.swing.JFrame;
@@ -29,8 +30,7 @@ public class Main {
     UIUtilities.applyDefaultBackground();
     UIUtilities.applyDefaultForeground();
     UIUtilities.applyDefaultFont();
-    UIUtilities.applyDefaultEditable();
-    
+    UIUtilities.applyDefaultEditable();    
     // new Test();
 
     @SuppressWarnings(value = { "myApp", "unused" })

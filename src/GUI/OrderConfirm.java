@@ -27,7 +27,7 @@ import javax.swing.border.LineBorder;
 import Utilities.UIUtilities;
 
 public class OrderConfirm extends JDialog {
-  
+
   public void displayDialog(Component c){
 
     pack();
@@ -51,10 +51,14 @@ public class OrderConfirm extends JDialog {
 
   private Dimension RADIOBUTTON_SIZE = new Dimension(107, 28);
 
-  
+  public void resetState(){
+    orderTypeGroup.clearSelection();
+    paymentTypeGroup.clearSelection();
+  }
+
   OrderConfirm(Controller mvc){
     setUndecorated(true);
-
+    
     //* Create on construct
     
     orderTypePanel = new JPanel(new FlowLayout());
@@ -69,6 +73,7 @@ public class OrderConfirm extends JDialog {
 
     Container orderConfirmPane = getContentPane();
     orderConfirmPane.setLayout(new BoxLayout(orderConfirmPane, BoxLayout.PAGE_AXIS));
+    
 
     //? Typecast Container into JComponent to paint border
     ((JComponent) orderConfirmPane).setBorder(BorderFactory.createCompoundBorder(new LineBorder(Color.GRAY, 2), new EmptyBorder(5, 5, 5, 5)));
@@ -78,7 +83,6 @@ public class OrderConfirm extends JDialog {
     confirmPayButton.setForeground(UIUtilities.CREAM);
     confirmPayButton.setBackground(UIUtilities.DARK_GREEN);
     confirmPayButton.setText("CONFIRM PAY");
-
     confirmPayButton.addActionListener(e -> {
       // Timer
       String orderTypeSelection;
@@ -93,7 +97,9 @@ public class OrderConfirm extends JDialog {
       }
 
       mvc.processOrder(paymentTypeSelection, orderTypeSelection);
-      mvc.switchPanel("CheckoutP");
+      mvc.switchPanel("StartP");
+      mvc.resetTopBarBehaviorCart();
+      mvc.displayBars(false);
       dispose();
       
     });
