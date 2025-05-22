@@ -5,10 +5,6 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import Utilities.GridBagUtilities;
 import Utilities.UIUtilities;
