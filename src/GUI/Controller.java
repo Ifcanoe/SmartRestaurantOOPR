@@ -58,8 +58,17 @@ public class Controller {
 
   //* Confirm Dialog Controller
   public void processOrder(String paymentType, String orderType){
-    model.createOrder(paymentType, orderType);
+    System.out.println(paymentType);
+    System.out.println(orderType);
 
+
+    if (paymentType == null || paymentType.isEmpty()){
+      return;
+    }
+    if (orderType == null || paymentType.isEmpty()){
+      return;
+    }
+    model.createOrder(paymentType, orderType);
     model.processCartItems();
 
   }

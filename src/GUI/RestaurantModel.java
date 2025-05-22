@@ -17,6 +17,10 @@ public class RestaurantModel {
   // * Order Processing
   public void createOrder(String paymentType, String orderType){
 
+    if (addedToCart.isEmpty()) { 
+      return; 
+    }
+
     try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO Orders (payment_type, order_date, order_type, order_total) VALUES (?, CURRENT_DATE(), ?, ?)", Statement.RETURN_GENERATED_KEYS)){
 
@@ -44,7 +48,11 @@ public class RestaurantModel {
 
         conn.setAutoCommit(false);
 
-        if (addedToCart.isEmpty()) { return; }
+        if (addedToCart.isEmpty()) { 
+          return; 
+        }
+
+
         
         for (MenuItemData item : addedToCart){
           stmt.setInt(1, currentOrderId);

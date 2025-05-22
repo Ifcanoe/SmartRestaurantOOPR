@@ -88,7 +88,7 @@ public class OrderConfirm extends JDialog {
       String orderTypeSelection;
       String paymentTypeSelection;
       
-      if (orderTypeGroup.getSelection() == null || paymentTypeGroup.getSelection() == null){
+      if (orderTypeGroup.getSelection() == null || orderTypeGroup.getSelection() == null){
         dispose();
         return;
       } else {
